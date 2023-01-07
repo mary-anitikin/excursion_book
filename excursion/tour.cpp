@@ -5,11 +5,6 @@ Tour::Tour(QObject *parent) : QObject(parent)
 
 }
 
-void Tour::testslot(QString str)
-{
-
-}
-
 QString Tour::slotRate(double fuel, double distime, int typeTr)
 {
     if(typeTr==1) { //автомобиль
