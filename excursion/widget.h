@@ -8,6 +8,7 @@
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QStandardItemModel>
+#include <QComboBox>
 
 namespace Ui {
 class Widget;
@@ -36,13 +37,17 @@ private slots:
 
     void tV_typeTr_fill();
 
-    void CB_transport_fill();
+    void CB_transport_fill(QComboBox *combo);
 
     void on_CB_transport_activated(int index);
 
     void on_PB_CalcTour_clicked();
 
     void on_tV_excursion_clicked(const QModelIndex &index);
+
+    void on_PB_ShowAllTour_clicked();
+
+    void showTourForTransport(int type, bool flag);
 
 private:
     Ui::Widget *ui;
@@ -51,6 +56,7 @@ private:
     QStandardItemModel *modelTour;
     QStandardItemModel *modelVehicle;
     int currentRow;
+    bool flagAllTour=false;
 
 };
 

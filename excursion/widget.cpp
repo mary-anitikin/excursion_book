@@ -15,20 +15,17 @@ Widget::Widget(QWidget *parent) :
         ui->l_status->setText("Успешно подключились к базе данных: " + db.databaseName());
         tV_excursion_fill();
         tV_typeTr_fill();
-        CB_transport_fill();
+        CB_transport_fill(ui->CB_transport);
+        CB_transport_fill(ui->CB_availableTransport);
         on_CB_transport_activated(0);
     }
     else {
         ui->l_status->setText("При подключении к базе данных произошла ошибка: " + db.lastError().databaseText() );
     }
-
-    ///сделать, чтобы при открытии формы кнопка "Добавить экскурсию" была синей
     ui->PB_AddExcursion->setFocus();
     on_PB_AddExcursion_clicked();
 
-
-
-
+    ui->LE_FuelQuantity->setValidator( new QIntValidator(0, 1000, this) );
 }
 
 Widget::~Widget()
@@ -55,12 +52,20 @@ void Widget::on_PBAddTypeTr_clicked()
 {
     ///Добавление нового вида транспорта пока не работает
     model->insertRow(model->rowCount());
-    CB_transport_fill();
+    CB_transport_fill(ui->CB_transport);
+    CB_transport_fill(ui->CB_availableTransport);
+
 }
 
 void Widget::on_PB_AddTour_clicked()
 {
-    modelTour->insertRow(modelTour->rowCount());
+
+   QString s_name = ui->LE_nameTour->text();
+   QString s_firstP = ui->LE_firstPoint->text();
+   QString s_endP = ui->LE_EndPoint->text();
+   int fuel = ui->LE_FuelQuantity->text().toInt();
+    QSqlQuery q(db);
+    q.prepare("INSERT INTO ListExcursion set (ExcursionID, NameExcursion, StartPoint, EndPoint, Distance, FlightTime, typeTrID) values ()");
 }
 
 void Widget::tV_excursion_fill() {
@@ -103,8 +108,8 @@ void Widget::tV_excursion_fill() {
     else {
         QMessageBox::critical(this,"Запрос не удался", "Запрос экскурсий не удался","Да");
     }
-
     ui->tV_excursion->setModel(modelTour);
+    showTourForTransport(q.value(6).toInt(), true);
 }
 
 void Widget::tV_typeTr_fill() {
@@ -141,8 +146,19 @@ void Widget::tV_typeTr_fill() {
     else {
         QMessageBox::critical(this,"Запрос не удался", "Запрос транспорта не удался","Да");
     }
-
     ui->tV_typeTr->setModel(model);
+}
+
+void Widget::CB_transport_fill(QComboBox *combo)
+{
+    combo->clear();
+    QSqlQuery q2(db);
+    q2.exec("SELECT typeTrID, Name FROM niTransportType");
+    int k = 0;
+    while(q2.next()) {
+        combo->insertItem(k,q2.value(1).toString(), q2.value(0));
+        k++;
+    }
 }
 
 void Widget::on_CB_transport_activated(int index)
@@ -165,7 +181,6 @@ void Widget::on_CB_transport_activated(int index)
     q.bindValue(":typeTrID", type);
 
     if(q.exec()) {
-
         int j = 0;
         while(q.next()) {
             QStandardItem* item1 = new QStandardItem(q.value(0).toString());
@@ -180,17 +195,7 @@ void Widget::on_CB_transport_activated(int index)
         }
     }
     ui->tV_vehicle->setModel(modelVehicle);
-}
-
-void Widget::CB_transport_fill() {    
-    ui->CB_transport->clear();
-    QSqlQuery q2(db);
-    q2.exec("SELECT typeTrID, Name FROM niTransportType");
-    int k = 0;
-    while(q2.next()) {
-        ui->CB_transport->insertItem(k,q2.value(1).toString(), q2.value(0));
-        k++;
-    }
+    showTourForTransport(type, false);
 }
 
 void Widget::on_PB_CalcTour_clicked()
@@ -230,4 +235,29 @@ void Widget::on_tV_excursion_clicked(const QModelIndex &index)
 
     ui->CB_transport->setCurrentIndex(ind);
     on_CB_transport_activated(ind);
+}
+
+void Widget::on_PB_ShowAllTour_clicked()
+{
+    tV_excursion_fill();
+    flagAllTour = true;
+}
+
+void Widget::showTourForTransport(int type, bool flag)
+{
+    if(!flag) {
+        for(int i=0; i<ui->tV_excursion->model()->rowCount(); i++) {
+            if(ui->tV_excursion->model()->data(ui->tV_excursion->model()->index(i,0), Qt::UserRole+1).toInt() != type) {
+                ui->tV_excursion->hideRow(i);
+            }
+            else {
+                ui->tV_excursion->showRow(i);
+            }
+        }
+    }
+    else {
+        for(int i=0; i<ui->tV_excursion->model()->rowCount(); i++) {
+            ui->tV_excursion->showRow(i);
+        }
+    }
 }

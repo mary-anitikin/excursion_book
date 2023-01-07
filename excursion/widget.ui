@@ -14,166 +14,6 @@
    <string>Widget</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0" colspan="4">
-    <widget class="QStackedWidget" name="stackedWidget">
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>2</number>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="page">
-      <widget class="QPushButton" name="pushButton_4">
-       <property name="geometry">
-        <rect>
-         <x>870</x>
-         <y>370</y>
-         <width>282</width>
-         <height>34</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Сохранить</string>
-       </property>
-      </widget>
-      <widget class="QTableView" name="tV_excursion">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>671</width>
-         <height>231</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="PB_AddTour">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>250</y>
-         <width>282</width>
-         <height>34</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Добавить экскурсию</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_6">
-       <property name="geometry">
-        <rect>
-         <x>860</x>
-         <y>10</y>
-         <width>66</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Транспорт</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="CB_transport">
-       <property name="geometry">
-        <rect>
-         <x>940</x>
-         <y>0</y>
-         <width>211</width>
-         <height>32</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="Line" name="line">
-       <property name="geometry">
-        <rect>
-         <x>680</x>
-         <y>0</y>
-         <width>16</width>
-         <height>231</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QTableView" name="tV_vehicle">
-       <property name="geometry">
-        <rect>
-         <x>700</x>
-         <y>40</y>
-         <width>461</width>
-         <height>191</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="PB_CalcTour">
-       <property name="geometry">
-        <rect>
-         <x>870</x>
-         <y>240</y>
-         <width>282</width>
-         <height>34</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Рассчитать поездку</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_res">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>300</y>
-         <width>1151</width>
-         <height>61</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="page_2">
-      <widget class="QTableView" name="tV_typeTr">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>421</width>
-         <height>351</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="PBAddTypeTr">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>380</y>
-         <width>191</width>
-         <height>34</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Добавить тип транспорта</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="PB_AddExcursion">
      <property name="minimumSize">
@@ -183,7 +23,7 @@
       </size>
      </property>
      <property name="text">
-      <string>ЭКСКУРСИИ</string>
+      <string>ВЫБОР ЭКСКУРСИИ</string>
      </property>
     </widget>
    </item>
@@ -230,8 +70,398 @@
       </size>
      </property>
      <property name="text">
-      <string>ТРАНСПОРТ</string>
+      <string>ДОБАВИТЬ</string>
      </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="frameShape">
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="geometry">
+        <rect>
+         <x>880</x>
+         <y>370</y>
+         <width>282</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Сохранить</string>
+       </property>
+      </widget>
+      <widget class="QTableView" name="tV_excursion">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>671</width>
+         <height>231</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>860</x>
+         <y>10</y>
+         <width>66</width>
+         <height>18</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Транспорт</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="CB_transport">
+       <property name="geometry">
+        <rect>
+         <x>940</x>
+         <y>0</y>
+         <width>211</width>
+         <height>32</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="Line" name="line">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>0</y>
+         <width>16</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+      <widget class="QTableView" name="tV_vehicle">
+       <property name="geometry">
+        <rect>
+         <x>700</x>
+         <y>40</y>
+         <width>461</width>
+         <height>201</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="PB_CalcTour">
+       <property name="geometry">
+        <rect>
+         <x>870</x>
+         <y>250</y>
+         <width>282</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Рассчитать поездку</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_res">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>300</y>
+         <width>1151</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="PB_ShowAllTour">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>250</y>
+         <width>282</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Показать все экскурсии</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <widget class="QTableView" name="tV_typeTr">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>421</width>
+         <height>351</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="PBAddTypeTr">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>380</y>
+         <width>191</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Добавить тип транспорта</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="PB_AddTour">
+       <property name="geometry">
+        <rect>
+         <x>880</x>
+         <y>380</y>
+         <width>282</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Добавить экскурсию</string>
+       </property>
+      </widget>
+      <widget class="Line" name="line_2">
+       <property name="geometry">
+        <rect>
+         <x>800</x>
+         <y>10</y>
+         <width>20</width>
+         <height>361</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+      <widget class="QWidget" name="">
+       <property name="geometry">
+        <rect>
+         <x>820</x>
+         <y>20</y>
+         <width>341</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="minimumSize">
+             <size>
+              <width>140</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>Название
+экскурсии</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LE_nameTour"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="minimumSize">
+             <size>
+              <width>140</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>Пункт
+отправления</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LE_firstPoint"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="minimumSize">
+             <size>
+              <width>140</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>Пункт
+назначения</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LE_EndPoint"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="maximumSize">
+             <size>
+              <width>140</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>Вид
+транспорта</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="CB_availableTransport"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="minimumSize">
+             <size>
+              <width>140</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>Количество
+топлива</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="LE_FuelQuantity"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </widget>
    </item>
   </layout>
