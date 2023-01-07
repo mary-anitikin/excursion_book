@@ -25,7 +25,7 @@ Widget::Widget(QWidget *parent) :
     ui->PB_AddExcursion->setFocus();
     on_PB_AddExcursion_clicked();
 
-    ui->LE_FuelQuantity->setValidator( new QIntValidator(0, 1000, this) );
+    ui->LE_disttimenew->setValidator(new QDoubleValidator(0.0, 10000.0, 2, this) );
 }
 
 Widget::~Widget()
@@ -60,12 +60,72 @@ void Widget::on_PBAddTypeTr_clicked()
 void Widget::on_PB_AddTour_clicked()
 {
 
-   QString s_name = ui->LE_nameTour->text();
-   QString s_firstP = ui->LE_firstPoint->text();
-   QString s_endP = ui->LE_EndPoint->text();
-   int fuel = ui->LE_FuelQuantity->text().toInt();
+    int type = ui->CB_availableTransport->currentData(Qt::UserRole).toInt();
+
+    QString s_name = ui->LE_nameTour->text();
+    QString s_firstP = ui->LE_firstPoint->text();
+    QString s_endP = ui->LE_EndPoint->text();
+    int disttime = ui->LE_disttimenew->text().toInt();
+    int newId = 0;
+
+    QSqlQuery q1(db);
+    if(q1.exec("Select MAX(ExcursionID ) from ListExcursion")) {
+        q1.next();
+        newId = q1.value(0).toInt()+1;
+    }
+    else newId = 1;
+
     QSqlQuery q(db);
-    q.prepare("INSERT INTO ListExcursion set (ExcursionID, NameExcursion, StartPoint, EndPoint, Distance, FlightTime, typeTrID) values ()");
+    if(type==1){
+        q.prepare("INSERT INTO ListExcursion "
+                  " (ExcursionID,"
+                  " NameExcursion,"
+                  " StartPoint,"
+                  " EndPoint,"
+                  " Distance,"
+                  " typeTrID) values (:ExcursionID,"
+                  " :NameExcursion, "
+                  " :StartPoint, "
+                  " :EndPoint, "
+                  " :Distance, "
+                  " :typeTrID)");
+        q.bindValue(":ExcursionID", newId);
+        q.bindValue(":NameExcursion", s_name);
+        q.bindValue(":StartPoint", s_firstP);
+        q.bindValue(":EndPoint", s_endP);
+        q.bindValue(":Distance", disttime);
+        q.bindValue(":typeTrID", type);
+    }
+    else if(type==2)
+    {
+        q.prepare("INSERT INTO ListExcursion "
+                  " (ExcursionID,"
+                  " NameExcursion,"
+                  " StartPoint,"
+                  " EndPoint,"
+                  " FlightTime,"
+                  " typeTrID) values (:ExcursionID,"
+                  " :NameExcursion, "
+                  " :StartPoint, "
+                  " :EndPoint, "
+                  " :FlightTime, "
+                  " :typeTrID)");
+        q.bindValue(":ExcursionID", newId);
+        q.bindValue(":NameExcursion", s_name);
+        q.bindValue(":StartPoint", s_firstP);
+        q.bindValue(":EndPoint", s_endP);
+        q.bindValue(":FlightTime",disttime );
+        q.bindValue(":typeTrID", type);
+    }
+    if(q.exec()) {
+        QMessageBox::information(this, "Новая экскурсия", "Экскурсия успешно добавлена. Вы можете видеть её в списке экскурсий", "Да");
+        tV_excursion_fill();
+    }
+    else {
+        QMessageBox::critical(this, "Новая экскурсия", "Не удалось добавить экскурсию", "Да");
+    }
+
+
 }
 
 void Widget::tV_excursion_fill() {
@@ -259,5 +319,16 @@ void Widget::showTourForTransport(int type, bool flag)
         for(int i=0; i<ui->tV_excursion->model()->rowCount(); i++) {
             ui->tV_excursion->showRow(i);
         }
+    }
+}
+
+void Widget::on_CB_availableTransport_activated(int index)
+{
+    int type = ui->CB_availableTransport->currentData(Qt::UserRole).toInt();
+    if(type==1){
+        ui->label_disttimenew->setText("Расстояние");
+    }
+    else if(type==2){
+        ui->label_disttimenew->setText("Время в пути");
     }
 }

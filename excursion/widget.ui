@@ -264,7 +264,7 @@
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>820</x>
@@ -425,7 +425,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="label_disttimenew">
             <property name="minimumSize">
              <size>
               <width>140</width>
@@ -449,13 +449,13 @@
              <number>1</number>
             </property>
             <property name="text">
-             <string>Количество
-топлива</string>
+             <string>Расстояние/
+время в пути</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="LE_FuelQuantity"/>
+           <widget class="QLineEdit" name="LE_disttimenew"/>
           </item>
          </layout>
         </item>

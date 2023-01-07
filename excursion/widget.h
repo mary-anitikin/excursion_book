@@ -49,6 +49,8 @@ private slots:
 
     void showTourForTransport(int type, bool flag);
 
+    void on_CB_availableTransport_activated(int index);
+
 private:
     Ui::Widget *ui;
     QSqlDatabase db;
