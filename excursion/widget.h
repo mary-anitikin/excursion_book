@@ -37,7 +37,7 @@ private slots:
 
     void tV_typeTr_fill();
 
-    void CB_transport_fill(QComboBox *combo);
+    void CB_fill(QComboBox *combo, QString id, QString name, QString table);
 
     void on_CB_transport_activated(int index);
 
