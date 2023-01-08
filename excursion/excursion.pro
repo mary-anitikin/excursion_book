@@ -37,28 +37,5 @@ HEADERS += \
 FORMS += \
         widget.ui
 
-DISTFILES += \
-    share/model.sql \
-    share/data.sql
 
-SQL_FILES = \
-# модели
-    share/model.sql \
-# данные
-    share/data.sql
-
-OTHER_FILES += \
-    $$SQL_FILES
-
-
-DB_NAME=$${PROJ_PREFFIX}db.sqlite
-
-#QMAKE_POST_LINK += \
-
-#    mkdir $$DEPLOY_SHARE_DIR/$$DB_NAME; \
-#    rm -rf $$DEPLOY_SHARE_DIR/$$DB_NAME; \
-#    touch $$DEPLOY_SHARE_DIR/$$DB_NAME; \
-#    chmod a+w $$DEPLOY_SHARE_DIR/$$DB_NAME; \
-#    cat $$SQL_FILES | sqlite3 $$DEPLOY_SHARE_DIR/$$DB_NAME; \
-#    cp $$DEPLOY_SHARE_DIR/$$DB_NAME;
 

@@ -10,32 +10,22 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    db = QSqlDatabase::addDatabase("QSQLITE");
-//    db.setDatabaseName("../db/excursion_db.db");
-//    if(db.open()) {
-     auto database = new WorkDB(this);
+    auto database = new WorkDB(this);
 
-     db = database->getDB();
-     database->createTable();
-     database->fillTableNormative();
-        //ui->l_status->setText("Успешно подключились к базе данных: " + db.databaseName());
-        tV_excursion_fill();
-        tV_typeTr_fill();
-        CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
-        CB_fill(ui->CB_availableTransport, "typeTrID", "Name", "niTransportType");
-        CB_fill(ui->CB_availableFuel, "FuelID", "Name", "niFuelType" );
-        CB_fill(ui->CB_availableTravel, "idMethod", "nameMethod", "niTravelMethod");
-        CB_fill(ui->CB_availableUnit, "UnitID", "UnitShortName", "niUnitOfMeasurementType");
-        CB_fill(ui->CB_availableTransport_2, "typeTrID", "Name", "niTransportType");
+    db = database->getDB();
+    database->createTable();
+    database->fillTableNormative();
+    //ui->l_status->setText("Успешно подключились к базе данных: " + db.databaseName());
+    tV_excursion_fill();
+    tV_typeTr_fill();
+    CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
+    CB_fill(ui->CB_availableTransport, "typeTrID", "Name", "niTransportType");
+    CB_fill(ui->CB_availableFuel, "FuelID", "Name", "niFuelType" );
+    CB_fill(ui->CB_availableTravel, "idMethod", "nameMethod", "niTravelMethod");
+    CB_fill(ui->CB_availableUnit, "UnitID", "UnitShortName", "niUnitOfMeasurementType");
+    CB_fill(ui->CB_availableTransport_2, "typeTrID", "Name", "niTransportType");
 
-        on_CB_transport_activated(0);
-//    }
-//    else {
-//        ui->l_status->setText("При подключении к базе данных произошла ошибка: " + db.lastError().databaseText() );
-//    }
-
-
-
+    on_CB_transport_activated(0);
 
     ui->PB_AddExcursion->setFocus();
     on_PB_AddExcursion_clicked();
@@ -133,7 +123,9 @@ void Widget::on_PB_AddTour_clicked()
     QString s_name = ui->LE_nameTour->text();
     QString s_firstP = ui->LE_firstPoint->text();
     QString s_endP = ui->LE_EndPoint->text();
-    double disttime = ui->LE_disttimenew->text().toInt();
+    QString disttime_text = ui->LE_disttimenew->text();
+    if(disttime_text.contains(",")) disttime_text.replace(",",".");
+    double disttime = disttime_text.toDouble();
     int newId = 0;
 
     QSqlQuery q1(db);
@@ -352,17 +344,13 @@ void Widget::on_PB_CalcTour_clicked()
     testObjectTour->typeTrID = ui->tV_excursion->model()->data(index,Qt::UserRole+1).toInt();
     ui->tV_excursion->indexAt(QPoint(0,CurRow)).data().toString();
 
-    //QModelIndex index1;
     int Column;
     if(testObjectTour->typeTrID == 1){
-        //index1 = modelTour->index(CurRow, 3, QModelIndex());
         Column = 3;
     }
     else if(testObjectTour->typeTrID == 2) {
-        //index1 = modelTour->index(CurRow, 4, QModelIndex());
         Column = 4;
     }
-    //testObjectTour->dist_time=ui->tV_excursion->model()->data(index1).toInt();
     testObjectTour->dist_time=ui->tV_excursion->model()->data(modelTour->index(CurRow, Column, QModelIndex())).toInt();
 
     int CurRowTr = ui->tV_vehicle->currentIndex().row();
