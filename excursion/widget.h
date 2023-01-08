@@ -51,6 +51,8 @@ private slots:
 
     void on_CB_availableTransport_activated(int index);
 
+    void on_PB_AddTrVehicle_clicked();
+
 private:
     Ui::Widget *ui;
     QSqlDatabase db;

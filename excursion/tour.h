@@ -9,8 +9,8 @@ class Tour : public QObject
 public:
     explicit Tour(QObject *parent = nullptr);
 
-    const int CarFuelRate = 100/12; // 12 л на 100 км
-    const int FlyFuelRate = 1/200; //200 кг на час полёта
+    const double CarFuelRate = 8.33; // 12 л на 100 км
+    const double FlyFuelRate = 0.005; //200 кг на час полёта
 
     int id; //идентификатор экскурсия-транспорт
     int ExcursionID; //id экскурсии
@@ -32,7 +32,7 @@ public:
 signals:
 
 public slots:
-     QString slotRate(double fuel, double distime, int typeTr);
+     QString slotRate();
 };
 
 #endif // TOUR_H

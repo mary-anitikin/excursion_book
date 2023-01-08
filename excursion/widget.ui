@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1189</width>
-    <height>562</height>
+    <height>576</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,6 +56,14 @@
        <height>0</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>17</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>ДОБАВИТЬ</string>
      </property>
@@ -68,6 +76,13 @@
        <width>250</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>17</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
       <string>ВЫБОР ЭКСКУРСИИ</string>
@@ -180,6 +195,12 @@
          <height>61</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <italic>true</italic>
+        </font>
+       </property>
        <property name="frameShape">
         <enum>QFrame::Box</enum>
        </property>
@@ -214,22 +235,22 @@
          <x>10</x>
          <y>10</y>
          <width>421</width>
-         <height>191</height>
+         <height>161</height>
         </rect>
        </property>
       </widget>
       <widget class="QPushButton" name="PBAddTypeTr">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>400</y>
-         <width>351</width>
-         <height>34</height>
+         <x>90</x>
+         <y>380</y>
+         <width>254</width>
+         <height>39</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>17</pointsize>
+         <pointsize>13</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -241,15 +262,15 @@
       <widget class="QPushButton" name="PB_AddTour">
        <property name="geometry">
         <rect>
-         <x>880</x>
+         <x>900</x>
          <y>380</y>
-         <width>282</width>
-         <height>34</height>
+         <width>205</width>
+         <height>39</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>17</pointsize>
+         <pointsize>13</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -485,7 +506,7 @@
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>200</y>
+         <y>180</y>
          <width>142</width>
          <height>190</height>
         </rect>
@@ -576,7 +597,7 @@
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>200</y>
+         <y>180</y>
          <width>131</width>
          <height>190</height>
         </rect>
@@ -660,6 +681,169 @@
         </item>
         <item>
          <widget class="QComboBox" name="CB_availableUnit"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="PB_AddTrVehicle">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>380</y>
+         <width>326</width>
+         <height>39</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Добавить транспортное средство</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>451</x>
+         <y>15</y>
+         <width>351</width>
+         <height>281</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="l_typeTr">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Вид
+транспорта</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="CB_availableTransport_2"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l_modelTr_7">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Модель</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="LE_modelTr"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="l_numberTr">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Регистрационный
+номер</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="LE_numberTr"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="l_fuelTr">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Количество
+топлива</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="LE_fuelQuantityTr"/>
         </item>
        </layout>
       </widget>

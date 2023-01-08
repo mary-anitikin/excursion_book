@@ -20,6 +20,7 @@ Widget::Widget(QWidget *parent) :
         CB_fill(ui->CB_availableFuel, "FuelID", "Name", "niFuelType" );
         CB_fill(ui->CB_availableTravel, "idMethod", "nameMethod", "niTravelMethod");
         CB_fill(ui->CB_availableUnit, "UnitID", "UnitShortName", "niUnitOfMeasurementType");
+        CB_fill(ui->CB_availableTransport_2, "typeTrID", "Name", "niTransportType");
 
         on_CB_transport_activated(0);
     }
@@ -30,6 +31,7 @@ Widget::Widget(QWidget *parent) :
     on_PB_AddExcursion_clicked();
 
     ui->LE_disttimenew->setValidator(new QDoubleValidator(0.0, 10000.0, 2, this) );
+    ui->LE_fuelQuantityTr->setValidator(new QIntValidator(0,10000,this));;
     ui->PB_save->hide(); ///временно скрыла, не придумала ещё, как именно сохранять
 }
 
@@ -55,6 +57,13 @@ void Widget::on_PB_AddTransport_clicked()
 
 void Widget::on_PBAddTypeTr_clicked()
 {
+    if(ui->CB_availableFuel->currentData(Qt::UserRole).isNull() ||
+            ui->CB_availableTravel->currentData(Qt::UserRole).isNull() ||
+            ui->CB_availableUnit->currentData(Qt::UserRole).isNull() ||
+            ui->LE_typeTrName->text().isEmpty()) {
+        QMessageBox::information(this, "Внимание!", "Заполните, пожалуйста, поля с информацией о новом типе транспорта", "Да");
+        return;
+    }
     QString nameTr = ui->LE_typeTrName->text();
     int fuel = ui->CB_availableFuel->currentData(Qt::UserRole).toInt();
     int methodTravel = ui->CB_availableTravel->currentData(Qt::UserRole).toInt();
@@ -333,19 +342,24 @@ void Widget::on_PB_CalcTour_clicked()
     testObjectTour->typeTrID = ui->tV_excursion->model()->data(index,Qt::UserRole+1).toInt();
     ui->tV_excursion->indexAt(QPoint(0,CurRow)).data().toString();
 
+    //QModelIndex index1;
+    int Column;
     if(testObjectTour->typeTrID == 1){
-        QModelIndex index1 = modelTour->index(CurRow, 3, QModelIndex());
+        //index1 = modelTour->index(CurRow, 3, QModelIndex());
+        Column = 3;
     }
     else if(testObjectTour->typeTrID == 2) {
-        QModelIndex index1 = modelTour->index(CurRow, 4, QModelIndex());
+        //index1 = modelTour->index(CurRow, 4, QModelIndex());
+        Column = 4;
     }
-    testObjectTour->dist_time=ui->tV_excursion->model()->data(index1).toInt();
+    //testObjectTour->dist_time=ui->tV_excursion->model()->data(index1).toInt();
+    testObjectTour->dist_time=ui->tV_excursion->model()->data(modelTour->index(CurRow, Column, QModelIndex())).toInt();
 
     int CurRowTr = ui->tV_vehicle->currentIndex().row();
     testObjectTour->FuelQuantity = ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt();
 
 
-    ui->label_res->setText(testObjectTour->slotRate(testObjectTour->FuelQuantity,testObjectTour->dist_time,testObjectTour->typeTrID));
+    ui->label_res->setText(testObjectTour->slotRate());
 
 }
 
@@ -393,5 +407,16 @@ void Widget::on_CB_availableTransport_activated(int index)
     }
     else if(type==2){
         ui->label_disttimenew->setText("Время в пути");
+    }
+}
+
+
+
+void Widget::on_PB_AddTrVehicle_clicked()
+{
+    if(ui->CB_availableTransport_2->currentData(Qt::UserRole).isNull() || ui->LE_modelTr->text().isEmpty()
+            || ui->LE_numberTr->text().isEmpty() || ui->LE_fuelQuantityTr->text().isEmpty()) {
+        QMessageBox::information(this, "Внимание!", "Заполните, пожалуйста, поля с информацией о новом транспортном средстве", "Да");
+        return;
     }
 }
