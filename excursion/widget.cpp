@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include "tour.h"
+#include "workdb.h"
 
 
 Widget::Widget(QWidget *parent) :
@@ -9,10 +10,15 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../db/excursion_db.db");
-    if(db.open()) {
-        ui->l_status->setText("Успешно подключились к базе данных: " + db.databaseName());
+//    db = QSqlDatabase::addDatabase("QSQLITE");
+//    db.setDatabaseName("../db/excursion_db.db");
+//    if(db.open()) {
+     auto database = new WorkDB(this);
+
+     db = database->getDB();
+     database->createTable();
+     database->fillTableNormative();
+        //ui->l_status->setText("Успешно подключились к базе данных: " + db.databaseName());
         tV_excursion_fill();
         tV_typeTr_fill();
         CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
@@ -23,10 +29,14 @@ Widget::Widget(QWidget *parent) :
         CB_fill(ui->CB_availableTransport_2, "typeTrID", "Name", "niTransportType");
 
         on_CB_transport_activated(0);
-    }
-    else {
-        ui->l_status->setText("При подключении к базе данных произошла ошибка: " + db.lastError().databaseText() );
-    }
+//    }
+//    else {
+//        ui->l_status->setText("При подключении к базе данных произошла ошибка: " + db.lastError().databaseText() );
+//    }
+
+
+
+
     ui->PB_AddExcursion->setFocus();
     on_PB_AddExcursion_clicked();
 
@@ -123,7 +133,7 @@ void Widget::on_PB_AddTour_clicked()
     QString s_name = ui->LE_nameTour->text();
     QString s_firstP = ui->LE_firstPoint->text();
     QString s_endP = ui->LE_EndPoint->text();
-    int disttime = ui->LE_disttimenew->text().toInt();
+    double disttime = ui->LE_disttimenew->text().toInt();
     int newId = 0;
 
     QSqlQuery q1(db);

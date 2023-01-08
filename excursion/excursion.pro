@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         widget.cpp \
-    tour.cpp
+    tour.cpp \
+    workdb.cpp
 
 HEADERS += \
         widget.h \
-    tour.h
+    tour.h \
+    workdb.h
 
 FORMS += \
         widget.ui
