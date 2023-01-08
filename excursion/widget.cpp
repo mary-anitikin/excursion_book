@@ -351,7 +351,7 @@ void Widget::on_PB_CalcTour_clicked()
     else if(testObjectTour->typeTrID == 2) {
         Column = 4;
     }
-    testObjectTour->dist_time=ui->tV_excursion->model()->data(modelTour->index(CurRow, Column, QModelIndex())).toInt();
+    testObjectTour->dist_time=ui->tV_excursion->model()->data(modelTour->index(CurRow, Column, QModelIndex())).toDouble();
 
     int CurRowTr = ui->tV_vehicle->currentIndex().row();
     testObjectTour->FuelQuantity = ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt();
@@ -417,4 +417,47 @@ void Widget::on_PB_AddTrVehicle_clicked()
         QMessageBox::information(this, "Внимание!", "Заполните, пожалуйста, поля с информацией о новом транспортном средстве", "Да");
         return;
     }
+    int type = ui->CB_availableTransport_2->currentData(Qt::UserRole).toInt();
+    QString modelTr = ui->LE_modelTr->text();
+    QString numberTr = ui->LE_numberTr->text();
+    int fuelQuantityTr = ui->LE_fuelQuantityTr->text().toInt();
+
+    int newId = 0;
+
+    QSqlQuery q1(db);
+    if(q1.exec("Select MAX(IDtr ) from ListTransport")) {
+        q1.next();
+        newId = q1.value(0).toInt()+1;
+    }
+    else newId = 1;
+
+    QSqlQuery q(db);
+
+    q.prepare("INSERT INTO ListTransport "
+              " (IDtr,"
+              " typeTrID,"
+              " Brand,"
+              " Number,"
+              " FuelQuantity) "
+              "values (:IDtr,"
+              " :typeTrID, "
+              " :Brand, "
+              " :Number, "
+              " :FuelQuantity) ");
+    q.bindValue(":IDtr", newId);
+    q.bindValue(":typeTrID", type);
+    q.bindValue(":Brand", modelTr);
+    q.bindValue(":Number", numberTr);
+    q.bindValue(":FuelQuantity", fuelQuantityTr);
+
+
+    if(q.exec()) {
+        QMessageBox::information(this, "Новое транспортное средство", "Новое транспортное средство успешно добавлено. Вы можете видеть в списке траспортных средств", "Да");
+        tV_typeTr_fill();
+    }
+    else {
+        QMessageBox::critical(this, "Новое транспортное средство", "Не удалось добавить новое транспортное средство", "Да");
+    }
+    on_CB_transport_activated(0);
+
 }
