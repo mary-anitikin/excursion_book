@@ -76,9 +76,9 @@ void WorkDB::createTable()
                  "                                       NOT NULL"
                  "                                       PRIMARY KEY,"
                  "            Name               TEXT,"
-                 "            fuel               INTEGER REFERENCES FuelType (FuelID) ON DELETE CASCADE"
+                 "            fuel               INTEGER REFERENCES niFuelType (FuelID) ON DELETE CASCADE"
                  "                                                                    ON UPDATE CASCADE,"
-                 "            unitsOfMeasurement INTEGER REFERENCES UnitOfMeasurementType (UnitID),"
+                 "            unitsOfMeasurement INTEGER REFERENCES niUnitOfMeasurementType (UnitID),"
                  "            idMethod           INTEGER REFERENCES niTravelMethod (idMethod) "
                  "        )";
     q.exec(s5);
@@ -87,7 +87,7 @@ void WorkDB::createTable()
                  "            IDtr         INTEGER PRIMARY KEY,"
                  "            typeTrID     INTEGER REFERENCES niTransportType (typeTrID) ON DELETE CASCADE,"
                  "            Brand        TEXT,"
-                 "            Number       TEXT,"
+                 "            Number       TEXT UNIQUE,"
                  "            FuelQuantity INTEGER"
                  "        )";
     q.exec(s6);

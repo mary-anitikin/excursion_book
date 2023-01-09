@@ -104,6 +104,8 @@ void Widget::on_PBAddTypeTr_clicked()
 
     CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
     CB_fill(ui->CB_availableTransport, "typeTrID", "Name", "niTransportType");
+    CB_fill(ui->CB_availableTransport_2, "typeTrID", "Name", "niTransportType");
+    ui->LE_typeTrName->clear();
 
 }
 
@@ -170,9 +172,13 @@ void Widget::on_PB_AddTour_clicked()
     if(q.exec()) {
         QMessageBox::information(this, "Новая экскурсия", "Экскурсия успешно добавлена. Вы можете видеть её в списке экскурсий", "Да");
         tV_excursion_fill();
+        ui->LE_nameTour->clear();
+        ui->LE_firstPoint->clear();
+        ui->LE_EndPoint->clear();
+        ui->LE_disttimenew->clear();
     }
     else {
-        QMessageBox::critical(this, "Новая экскурсия", "Не удалось добавить экскурсию", "Да");
+        QMessageBox::critical(this, "Новая экскурсия", "Не удалось добавить экскурсию. Попробуйте перезапустить программу.", "Да");
     }
 
 
@@ -456,7 +462,10 @@ void Widget::on_PB_AddTrVehicle_clicked()
 
     if(q.exec()) {
         QMessageBox::information(this, "Новое транспортное средство", "Новое транспортное средство успешно добавлено. Вы можете видеть в списке траспортных средств", "Да");
-        tV_vehicle_fill();///???
+        tV_vehicle_fill();
+        ui->LE_modelTr->clear();
+        ui->LE_numberTr->clear();
+        ui->LE_fuelQuantityTr->clear();
     }
     else {
         QMessageBox::critical(this, "Новое транспортное средство", "Не удалось добавить новое транспортное средство", "Да");
@@ -467,6 +476,9 @@ void Widget::on_PB_AddTrVehicle_clicked()
 
 void Widget::on_PB_DeleteTour_clicked()
 {
+    if(!ui->tV_excursion->currentIndex().isValid()){
+        return;
+    }
     int id;
     int row = ui->tV_excursion->currentIndex().row();
     id = modelTour->item(row,0)->data(Qt::UserRole).toInt();
@@ -476,6 +488,9 @@ void Widget::on_PB_DeleteTour_clicked()
 
 void Widget::on_PB_DeleteTr_clicked()
 {
+    if(!ui->tV_vehicle->currentIndex().isValid()){
+        return;
+    }
     int id;
     int row = ui->tV_vehicle->currentIndex().row();
     id = modelVehicle->item(row,0)->data(Qt::UserRole).toInt();
@@ -485,9 +500,23 @@ void Widget::on_PB_DeleteTr_clicked()
 
 void Widget::on_PB_DeleteTypeTr_clicked()
 {
+    if(!ui->tV_typeTr->currentIndex().isValid()) {
+        return;
+    }
     int id;
     int row = ui->tV_typeTr->currentIndex().row();
     id = model->item(row,0)->data(Qt::UserRole+1).toInt();
     myWorkDB->deleteRowFromTable(id,"typeTrID", "niTransportType");
     tV_typeTr_fill();
+    CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
+    CB_fill(ui->CB_availableTransport, "typeTrID", "Name", "niTransportType");
+    CB_fill(ui->CB_availableTransport_2, "typeTrID", "Name", "niTransportType");
+
+    QString s = "SELECT IDtr FROM ListTransport WHERE typeTrID = " + QString::number(id);
+    QSqlQuery q(db);
+    q.exec(s);
+    while(q.next()) {
+        myWorkDB->deleteRowFromTable(q.value(0).toInt(),"IDtr", "ListTransport");
+    }
+    tV_vehicle_fill();
 }
