@@ -38,6 +38,8 @@ private slots:
 
     void tV_typeTr_fill();
 
+    void tV_vehicle_fill();
+
     void CB_fill(QComboBox *combo, QString id, QString name, QString table);
 
     void on_CB_transport_activated(int index);
@@ -53,6 +55,12 @@ private slots:
     void on_CB_availableTransport_activated(int index);
 
     void on_PB_AddTrVehicle_clicked();
+
+    void on_PB_DeleteTour_clicked();
+
+    void on_PB_DeleteTr_clicked();
+
+    void on_PB_DeleteTypeTr_clicked();
 
 private:
     Ui::Widget *ui;

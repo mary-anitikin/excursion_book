@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1189</width>
-    <height>576</height>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,19 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="4">
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <kerning>true</kerning>
+      </font>
+     </property>
      <property name="text">
-      <string>НАЗВАНИЕ ПРОГРАММЫ</string>
+      <string>Регистрация экскурсионных поездок</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -30,6 +41,13 @@
    </item>
    <item row="3" column="3">
     <widget class="QPushButton" name="pushButton_3">
+     <property name="font">
+      <font>
+       <pointsize>17</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Выход</string>
      </property>
@@ -101,14 +119,14 @@
       <number>2</number>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <widget class="QPushButton" name="PB_save">
        <property name="geometry">
         <rect>
          <x>880</x>
-         <y>370</y>
+         <y>410</y>
          <width>282</width>
          <height>34</height>
         </rect>
@@ -121,7 +139,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>10</y>
+         <y>20</y>
          <width>671</width>
          <height>231</height>
         </rect>
@@ -144,7 +162,7 @@
        <property name="geometry">
         <rect>
          <x>940</x>
-         <y>0</y>
+         <y>10</y>
          <width>211</width>
          <height>32</height>
         </rect>
@@ -154,7 +172,7 @@
        <property name="geometry">
         <rect>
          <x>680</x>
-         <y>0</y>
+         <y>10</y>
          <width>16</width>
          <height>231</height>
         </rect>
@@ -167,7 +185,7 @@
        <property name="geometry">
         <rect>
          <x>700</x>
-         <y>40</y>
+         <y>50</y>
          <width>461</width>
          <height>201</height>
         </rect>
@@ -176,22 +194,32 @@
       <widget class="QPushButton" name="PB_CalcTour">
        <property name="geometry">
         <rect>
-         <x>870</x>
-         <y>250</y>
+         <x>10</x>
+         <y>340</y>
          <width>282</width>
          <height>34</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Рассчитать поездку</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_res">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>300</y>
-         <width>1151</width>
+         <x>400</x>
+         <y>330</y>
+         <width>761</width>
          <height>61</height>
         </rect>
        </property>
@@ -218,13 +246,55 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>250</y>
+         <y>260</y>
          <width>282</width>
          <height>34</height>
         </rect>
        </property>
        <property name="text">
         <string>Показать все экскурсии</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="PB_DeleteTour">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>260</y>
+         <width>282</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Удалить экскурсию</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="PB_DeleteTr">
+       <property name="geometry">
+        <rect>
+         <x>870</x>
+         <y>260</y>
+         <width>282</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Удалить транспортное средство</string>
+       </property>
+      </widget>
+      <widget class="Line" name="line_4">
+       <property name="geometry">
+        <rect>
+         <x>17</x>
+         <y>300</y>
+         <width>1141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="lineWidth">
+        <number>4</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </widget>
@@ -242,10 +312,10 @@
       <widget class="QPushButton" name="PBAddTypeTr">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>30</x>
          <y>380</y>
          <width>254</width>
-         <height>39</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -265,7 +335,7 @@
          <x>900</x>
          <y>380</y>
          <width>205</width>
-         <height>39</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -690,7 +760,7 @@
          <x>460</x>
          <y>380</y>
          <width>326</width>
-         <height>39</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -846,6 +916,20 @@
          <widget class="QLineEdit" name="LE_fuelQuantityTr"/>
         </item>
        </layout>
+      </widget>
+      <widget class="QPushButton" name="PB_DeleteTypeTr">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>380</y>
+         <width>121</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Удалить
+тип транспорта</string>
+       </property>
       </widget>
      </widget>
     </widget>

@@ -15,7 +15,9 @@ public:
     QSqlDatabase getDB();
     void createTable();
     void fillTableNormative();
+    void fillTableStart(); //заполнение таблиц исходными данными задачи
     int selectMaxFromTable(QString nameColumn, QString nameTable);
+    void deleteRowFromTable(int idR, QString idName, QString nameTable);
 
 signals:
 

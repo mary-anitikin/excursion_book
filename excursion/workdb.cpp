@@ -3,6 +3,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QVariant>
+#include <QDebug>
 
 WorkDB::WorkDB(QWidget *parent) : QWidget(parent)
 {
@@ -113,6 +114,122 @@ void WorkDB::fillTableNormative()
     q.exec(s6);
 }
 
+void WorkDB::fillTableStart()
+{
+    QSqlQuery q(db);
+
+    QString str1 = "INSERT INTO niTransportType "
+                 "(typeTrID,"
+                 " Name, "
+                 " fuel, "
+                 " unitsOfMeasurement,  "
+                 " idMethod ) values "
+                 "(1, "
+                 "'Автомобиль',"
+                 " 1, "
+                 " 1, "
+                 " 1)";
+    q.exec(str1);
+
+    QString str2 = "INSERT INTO niTransportType "
+                 "(typeTrID,"
+                 " Name, "
+                 " fuel, "
+                 " unitsOfMeasurement,  "
+                 " idMethod ) values "
+                 "(2, "
+                 "'Самолёт',"
+                 " 1, "
+                 " 2, "
+                 " 2)";
+    q.exec(str2);
+
+    QString s1 = "INSERT INTO ListExcursion "
+                 "(ExcursionID,"
+                 " NameExcursion, "
+                 " StartPoint, "
+                 " EndPoint,  "
+                 " Distance, "
+                 "typeTrID ) values "
+                 "(1, "
+                 "'Москва Златоглавая',"
+                 " 'Ковров', "
+                 " 'Москва', "
+                 " 750, "
+                 "1)";
+    q.exec(s1);
+
+    QString s2 = "INSERT INTO ListExcursion "
+                 "(ExcursionID,"
+                 " NameExcursion, "
+                 " StartPoint, "
+                 " EndPoint,  "
+                 " Distance, "
+                 "typeTrID ) values "
+                 "(2, "
+                 "'К Илье Муромцу',"
+                 " 'Ковров', "
+                 " 'Муром', "
+                 " 223, "
+                 "1)";
+    q.exec(s2);
+
+    QString s3 = "INSERT INTO ListExcursion "
+                 "(ExcursionID,"
+                 " NameExcursion, "
+                 " StartPoint, "
+                 " EndPoint,  "
+                 " FlightTime, "
+                 "typeTrID ) values "
+                 "(3, "
+                 "'Янтарная столица России',"
+                 " 'Москва', "
+                 " 'Калининград', "
+                 " 2.7, "
+                 "2)";
+    q.exec(s3);
+
+    QString st1 = "INSERT INTO ListTransport "
+                 "(IDtr,"
+                 " typeTrID, "
+                 " Brand, "
+                 " Number,  "
+                 " FuelQuantity ) values "
+                 "(1, "
+                 " 1 ,"
+                 " 'ПОБЕДА', "
+                 " 'у234ек', "
+                 " 50)";
+    q.exec(st1);
+
+    QString st2 = "INSERT INTO ListTransport "
+                 "(IDtr,"
+                 " typeTrID, "
+                 " Brand, "
+                 " Number,  "
+                 " FuelQuantity ) values "
+                 "(2, "
+                 " 1 ,"
+                 " 'Opel', "
+                 " 'м567ол', "
+                 " 60)";
+    q.exec(st2);
+
+    QString st3 = "INSERT INTO ListTransport "
+                 "(IDtr,"
+                 " typeTrID, "
+                 " Brand, "
+                 " Number,  "
+                 " FuelQuantity ) values "
+                 "(3, "
+                 " 2 ,"
+                 " 'LightFly', "
+                 " 'RA09876', "
+                 " 550)";
+    q.exec(st3);
+
+}
+
 int WorkDB::selectMaxFromTable(QString nameColumn, QString nameTable)
 {
     int newId = 0;
@@ -125,4 +242,18 @@ int WorkDB::selectMaxFromTable(QString nameColumn, QString nameTable)
     }
     else newId = 1;
     return newId;
+}
+
+void WorkDB::deleteRowFromTable(int idR, QString idName, QString nameTable)
+{
+    QString s = "DELETE FROM "+nameTable+ " WHERE "+ idName +" = " + QString::number(idR);
+    qDebug() << s;
+    QSqlQuery q(db);
+    if(q.exec(s)) {
+        QMessageBox::information(this,"Удаление","Удаление прошло успешно", "Да");
+    }
+    else {
+        QMessageBox::critical(this,"Удаление","Удаление не удалось" + q.lastError().text(), "Да");
+
+    }
 }

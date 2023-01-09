@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 #include "tour.h"
 #include "workdb.h"
+#include <QDebug>
 
 
 Widget::Widget(QWidget *parent) :
@@ -15,9 +16,11 @@ Widget::Widget(QWidget *parent) :
     db = myWorkDB->getDB();
     myWorkDB->createTable();
     myWorkDB->fillTableNormative();
-    //ui->l_status->setText("Успешно подключились к базе данных: " + db.databaseName());
+    myWorkDB->fillTableStart();
+
     tV_excursion_fill();
     tV_typeTr_fill();
+    tV_vehicle_fill();
     CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
     CB_fill(ui->CB_availableTransport, "typeTrID", "Name", "niTransportType");
     CB_fill(ui->CB_availableFuel, "FuelID", "Name", "niFuelType" );
@@ -71,14 +74,6 @@ void Widget::on_PBAddTypeTr_clicked()
 
     int newId = myWorkDB->selectMaxFromTable("typeTrID", "niTransportType");
 
-
-//    QSqlQuery q1(db);
-//    if(q1.exec("Select MAX(typeTrID ) from niTransportType")) {
-//        q1.next();
-//        newId = q1.value(0).toInt()+1;
-//    }
-//    else newId = 1;
-
     QSqlQuery q(db);
 
     q.prepare("INSERT INTO niTransportType "
@@ -127,14 +122,8 @@ void Widget::on_PB_AddTour_clicked()
     QString disttime_text = ui->LE_disttimenew->text();
     if(disttime_text.contains(",")) disttime_text.replace(",",".");
     double disttime = disttime_text.toDouble();
-    int newId = myWorkDB->selectMaxFromTable("ExcursionID", "ListExcursion");
 
-//    QSqlQuery q1(db);
-//    if(q1.exec("Select MAX(ExcursionID ) from ListExcursion")) {
-//        q1.next();
-//        newId = q1.value(0).toInt()+1;
-//    }
-//    else newId = 1;
+    int newId = myWorkDB->selectMaxFromTable("ExcursionID", "ListExcursion");
 
     QSqlQuery q(db);
     if(type==1){
@@ -248,7 +237,8 @@ void Widget::tV_typeTr_fill() {
     if(q.exec("Select niTransportType.Name, "
               " niFuelType.Name,"
               " niUnitOfMeasurementType.UnitShortName,"
-              " niTravelMethod.nameMethod"
+              " niTravelMethod.nameMethod ,"
+              " niTransportType.typeTrID "
               " from niTransportType, niFuelType, niUnitOfMeasurementType, niTravelMethod"
               " where niTransportType.fuel = niFuelType.FuelID "
               " AND niTransportType.unitsOfMeasurement = niUnitOfMeasurementType.UnitID"
@@ -257,6 +247,7 @@ void Widget::tV_typeTr_fill() {
         int j = 0;
         while(q.next()) {
             QStandardItem* item1 = new QStandardItem(q.value(0).toString());
+            item1->setData(q.value(4), Qt::UserRole+1);
             model->setItem(j, 0, item1);
 
             QStandardItem* item2 = new QStandardItem(q.value(1).toString());
@@ -276,23 +267,7 @@ void Widget::tV_typeTr_fill() {
     ui->tV_typeTr->setModel(model);
 }
 
-void Widget::CB_fill(QComboBox *combo, QString id, QString name, QString table)
-{
-    combo->clear();
-    QString str;
-    str = "SELECT " + id + " , " + name + " FROM " + table;
-
-    QSqlQuery q2(db);
-    //q2.exec("SELECT typeTrID, Name FROM niTransportType");
-    q2.exec(str);
-    int k = 0;
-    while(q2.next()) {
-        combo->insertItem(k,q2.value(1).toString(), q2.value(0));
-        k++;
-    }
-}
-
-void Widget::on_CB_transport_activated(int index)
+void Widget::tV_vehicle_fill()
 {
     modelVehicle = new QStandardItemModel;
     modelVehicle->setColumnCount(3);
@@ -300,21 +275,19 @@ void Widget::on_CB_transport_activated(int index)
     modelVehicle->setHeaderData(1,Qt::Horizontal, "Номер", Qt::DisplayRole);
     modelVehicle->setHeaderData(2,Qt::Horizontal, "Количество топлива", Qt::DisplayRole);
     ui->tV_vehicle->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    int type;
-    type = ui->CB_transport->itemData(index).toInt();
 
     QSqlQuery q(db);
     q.prepare("Select Brand, "
               " Number, "
-              " FuelQuantity "
-              " from ListTransport "
-              " where typeTrID = :typeTrID");
-    q.bindValue(":typeTrID", type);
+              " FuelQuantity,"
+              " IDtr "
+              " from ListTransport ");
 
     if(q.exec()) {
         int j = 0;
         while(q.next()) {
             QStandardItem* item1 = new QStandardItem(q.value(0).toString());
+            item1->setData(q.value(3),Qt::UserRole+1);
             modelVehicle->setItem(j, 0, item1);
 
             QStandardItem* item2 = new QStandardItem(q.value(1).toString());
@@ -326,6 +299,28 @@ void Widget::on_CB_transport_activated(int index)
         }
     }
     ui->tV_vehicle->setModel(modelVehicle);
+}
+
+void Widget::CB_fill(QComboBox *combo, QString id, QString name, QString table)
+{
+    combo->clear();
+    QString str;
+    str = "SELECT " + id + " , " + name + " FROM " + table;
+
+    QSqlQuery q2(db);
+    q2.exec(str);
+    int k = 0;
+    while(q2.next()) {
+        combo->insertItem(k,q2.value(1).toString(), q2.value(0));
+        k++;
+    }
+}
+
+void Widget::on_CB_transport_activated(int index)
+{
+    int type;
+    type = ui->CB_transport->itemData(index).toInt();
+
     showTourForTransport(type, false);
 }
 
@@ -401,10 +396,15 @@ void Widget::showTourForTransport(int type, bool flag)
 void Widget::on_CB_availableTransport_activated(int index)
 {
     int type = ui->CB_availableTransport->currentData(Qt::UserRole).toInt();
-    if(type==1){
+    QString s;
+    QSqlQuery q(db);
+    s = "SELECT unitsOfMeasurement FROM niTransportType WHERE typeTrID = " + QString::number(type);
+    q.exec(s);
+    q.next();
+    if(q.value(0).toInt()==1){
         ui->label_disttimenew->setText("Расстояние");
     }
-    else if(type==2){
+    else if(q.value(0).toInt()==2){
         ui->label_disttimenew->setText("Время в пути");
     }
 }
@@ -424,13 +424,6 @@ void Widget::on_PB_AddTrVehicle_clicked()
     int fuelQuantityTr = ui->LE_fuelQuantityTr->text().toInt();
 
     int newId = myWorkDB->selectMaxFromTable("IDtr", "ListTransport");
-
-//    QSqlQuery q1(db);
-//    if(q1.exec("Select MAX(IDtr ) from ListTransport")) {
-//        q1.next();
-//        newId = q1.value(0).toInt()+1;
-//    }
-//    else newId = 1;
 
     QSqlQuery q(db);
 
@@ -454,11 +447,38 @@ void Widget::on_PB_AddTrVehicle_clicked()
 
     if(q.exec()) {
         QMessageBox::information(this, "Новое транспортное средство", "Новое транспортное средство успешно добавлено. Вы можете видеть в списке траспортных средств", "Да");
-        tV_typeTr_fill();
+        tV_vehicle_fill();///???
     }
     else {
         QMessageBox::critical(this, "Новое транспортное средство", "Не удалось добавить новое транспортное средство", "Да");
     }
     on_CB_transport_activated(0);
 
+}
+
+void Widget::on_PB_DeleteTour_clicked()
+{
+    int id;
+    int row = ui->tV_excursion->currentIndex().row();
+    id = modelTour->item(row,0)->data(Qt::UserRole+1).toInt();
+    myWorkDB->deleteRowFromTable(id,"ExcursionID", "ListExcursion");
+    tV_excursion_fill();
+}
+
+void Widget::on_PB_DeleteTr_clicked()
+{
+    int id;
+    int row = ui->tV_vehicle->currentIndex().row();
+    id = modelVehicle->item(row,0)->data(Qt::UserRole+1).toInt();
+    myWorkDB->deleteRowFromTable(id,"IDtr", "ListTransport");
+    tV_vehicle_fill();
+}
+
+void Widget::on_PB_DeleteTypeTr_clicked()
+{
+    int id;
+    int row = ui->tV_typeTr->currentIndex().row();
+    id = model->item(row,0)->data(Qt::UserRole+1).toInt();
+    myWorkDB->deleteRowFromTable(id,"typeTrID", "niTransportType");
+    tV_typeTr_fill();
 }
