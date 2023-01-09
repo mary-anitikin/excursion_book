@@ -460,7 +460,7 @@ void Widget::on_PB_DeleteTour_clicked()
 {
     int id;
     int row = ui->tV_excursion->currentIndex().row();
-    id = modelTour->item(row,0)->data(Qt::UserRole+1).toInt();
+    id = modelTour->item(row,0)->data(Qt::UserRole).toInt();
     myWorkDB->deleteRowFromTable(id,"ExcursionID", "ListExcursion");
     tV_excursion_fill();
 }
