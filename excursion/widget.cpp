@@ -280,6 +280,7 @@ void Widget::tV_vehicle_fill()
     q.prepare("Select Brand, "
               " Number, "
               " FuelQuantity,"
+              " typeTrID,"
               " IDtr "
               " from ListTransport ");
 
@@ -287,6 +288,7 @@ void Widget::tV_vehicle_fill()
         int j = 0;
         while(q.next()) {
             QStandardItem* item1 = new QStandardItem(q.value(0).toString());
+            item1->setData(q.value(4),Qt::UserRole);
             item1->setData(q.value(3),Qt::UserRole+1);
             modelVehicle->setItem(j, 0, item1);
 
@@ -320,7 +322,14 @@ void Widget::on_CB_transport_activated(int index)
 {
     int type;
     type = ui->CB_transport->itemData(index).toInt();
-
+    for(int i=0; i<ui->tV_vehicle->model()->rowCount(); i++) {
+        if(ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(i,0), Qt::UserRole+1).toInt() != type) {
+            ui->tV_vehicle->hideRow(i);
+        }
+        else {
+            ui->tV_vehicle->showRow(i);
+        }
+    }
     showTourForTransport(type, false);
 }
 
@@ -469,7 +478,7 @@ void Widget::on_PB_DeleteTr_clicked()
 {
     int id;
     int row = ui->tV_vehicle->currentIndex().row();
-    id = modelVehicle->item(row,0)->data(Qt::UserRole+1).toInt();
+    id = modelVehicle->item(row,0)->data(Qt::UserRole).toInt();
     myWorkDB->deleteRowFromTable(id,"IDtr", "ListTransport");
     tV_vehicle_fill();
 }
