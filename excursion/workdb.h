@@ -15,10 +15,14 @@ public:
     QSqlDatabase getDB();
     void createTable();
     void fillTableNormative();
+    int selectMaxFromTable(QString nameColumn, QString nameTable);
 
 signals:
 
 public slots:
+
+private:
+    QSqlDatabase db;
 
 };
 

@@ -2,10 +2,19 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QVariant>
 
 WorkDB::WorkDB(QWidget *parent) : QWidget(parent)
 {
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("../excursion_db.db");
+    if(db.open()) {
+        QMessageBox::information(this,"Подключение к БД","Успешно подключились к базе данных: " + db.databaseName(), "Да");
+    }
+    else {
+        QMessageBox::critical(this,"Подключение к БД","Не удалось подключиться к базе данных: " + db.databaseName(), "Да");
 
+    }
 }
 
 WorkDB::~WorkDB()
@@ -15,21 +24,12 @@ WorkDB::~WorkDB()
 
 QSqlDatabase WorkDB::getDB()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../db/excursion_db.db");
-    if(db.open()) {
-        QMessageBox::information(this,"Подключение к БД","Успешно подключились к базе данных: " + db.databaseName(), "Да");
-    }
-    else {
-        QMessageBox::critical(this,"Подключение к БД","Не удалось подключиться к базе данных: " + db.databaseName(), "Да");
-
-    }
+    return db;
 
 }
 
 void WorkDB::createTable()
 {
-    QSqlDatabase db = QSqlDatabase::database();
     QSqlQuery q(db);
 
     QString s1 = "CREATE TABLE IF NOT EXISTS ListExcursion ("
@@ -95,7 +95,6 @@ void WorkDB::createTable()
 
 void WorkDB::fillTableNormative()
 {
-    QSqlDatabase db = QSqlDatabase::database();
     QSqlQuery q(db);
 
     QString s1 = "INSERT INTO niFuelType (FuelID, Name) values (1, 'бензин')";
@@ -112,4 +111,18 @@ void WorkDB::fillTableNormative()
     q.exec(s5);
     QString s6 = "INSERT INTO niUnitOfMeasurementType (UnitID, UnitName, UnitShortName) values (2, 'килограмм', 'кг')";
     q.exec(s6);
+}
+
+int WorkDB::selectMaxFromTable(QString nameColumn, QString nameTable)
+{
+    int newId = 0;
+
+    QString s = "Select MAX(" + nameColumn +") from "+nameTable;
+    QSqlQuery q1(db);
+    if(q1.exec(s)) {
+        q1.next();
+        newId = q1.value(0).toInt()+1;
+    }
+    else newId = 1;
+    return newId;
 }

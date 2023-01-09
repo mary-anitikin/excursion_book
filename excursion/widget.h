@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include <QComboBox>
+#include "workdb.h"
 
 namespace Ui {
 class Widget;
@@ -55,6 +56,7 @@ private slots:
 
 private:
     Ui::Widget *ui;
+    WorkDB *myWorkDB;
     QSqlDatabase db;
     QStandardItemModel *model;
     QStandardItemModel *modelTour;

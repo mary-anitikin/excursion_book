@@ -10,11 +10,11 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    auto database = new WorkDB(this);
+    myWorkDB = new WorkDB(this);
 
-    db = database->getDB();
-    database->createTable();
-    database->fillTableNormative();
+    db = myWorkDB->getDB();
+    myWorkDB->createTable();
+    myWorkDB->fillTableNormative();
     //ui->l_status->setText("Успешно подключились к базе данных: " + db.databaseName());
     tV_excursion_fill();
     tV_typeTr_fill();
@@ -69,14 +69,15 @@ void Widget::on_PBAddTypeTr_clicked()
     int methodTravel = ui->CB_availableTravel->currentData(Qt::UserRole).toInt();
     int unit = ui->CB_availableUnit->currentData(Qt::UserRole).toInt();
 
-    int newId = 0;
+    int newId = myWorkDB->selectMaxFromTable("typeTrID", "niTransportType");
 
-    QSqlQuery q1(db);
-    if(q1.exec("Select MAX(typeTrID ) from niTransportType")) {
-        q1.next();
-        newId = q1.value(0).toInt()+1;
-    }
-    else newId = 1;
+
+//    QSqlQuery q1(db);
+//    if(q1.exec("Select MAX(typeTrID ) from niTransportType")) {
+//        q1.next();
+//        newId = q1.value(0).toInt()+1;
+//    }
+//    else newId = 1;
 
     QSqlQuery q(db);
 
@@ -126,14 +127,14 @@ void Widget::on_PB_AddTour_clicked()
     QString disttime_text = ui->LE_disttimenew->text();
     if(disttime_text.contains(",")) disttime_text.replace(",",".");
     double disttime = disttime_text.toDouble();
-    int newId = 0;
+    int newId = myWorkDB->selectMaxFromTable("ExcursionID", "ListExcursion");
 
-    QSqlQuery q1(db);
-    if(q1.exec("Select MAX(ExcursionID ) from ListExcursion")) {
-        q1.next();
-        newId = q1.value(0).toInt()+1;
-    }
-    else newId = 1;
+//    QSqlQuery q1(db);
+//    if(q1.exec("Select MAX(ExcursionID ) from ListExcursion")) {
+//        q1.next();
+//        newId = q1.value(0).toInt()+1;
+//    }
+//    else newId = 1;
 
     QSqlQuery q(db);
     if(type==1){
@@ -422,14 +423,14 @@ void Widget::on_PB_AddTrVehicle_clicked()
     QString numberTr = ui->LE_numberTr->text();
     int fuelQuantityTr = ui->LE_fuelQuantityTr->text().toInt();
 
-    int newId = 0;
+    int newId = myWorkDB->selectMaxFromTable("IDtr", "ListTransport");
 
-    QSqlQuery q1(db);
-    if(q1.exec("Select MAX(IDtr ) from ListTransport")) {
-        q1.next();
-        newId = q1.value(0).toInt()+1;
-    }
-    else newId = 1;
+//    QSqlQuery q1(db);
+//    if(q1.exec("Select MAX(IDtr ) from ListTransport")) {
+//        q1.next();
+//        newId = q1.value(0).toInt()+1;
+//    }
+//    else newId = 1;
 
     QSqlQuery q(db);
 
