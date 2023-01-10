@@ -53,3 +53,7 @@ Cистема регистрирует экскурсионные поездки
 
 <strong><em>Удалить тип транспортного средства можно на этой же форме, т.к. на ней располагается таблица с типами ТС.</em></strong>
 
+![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/011.gif?raw=true)
+
+
+
