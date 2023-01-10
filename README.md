@@ -8,3 +8,4 @@
 База данных SQLITE
 
 ***
+![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/1.png?raw=true)
