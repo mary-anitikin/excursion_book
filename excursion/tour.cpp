@@ -13,25 +13,25 @@ QString Tour::slotRate()
 
     double maxDist = FuelQuantity*CarFuelRate;
         if(maxDist>dist_time){
-            return("Топлива хватит");
+            return("Топлива достаточно");
         }
         else if (maxDist==dist_time) {
-            return("Топлива впритык в одну сторону");
+            return("Для данного маршрута топливо на пределе.\nРекомендуется дозаправка.");
         }
         else if (maxDist<dist_time) {
-            return("Топлива не хватит");
+            return("Топлива не достаточно.\nНа оставшемся топливе можно продолжать движение " + QString::number(maxDist) + " км");
         }
     }
     if(UnitID==2){ //килограммы
         double maxTime = FuelQuantity*FlyFuelRate;
             if(maxTime>dist_time){
-                return("Топлива хватит");
+                return("Топлива достаточно");
             }
             else if (maxTime==dist_time) {
-                return("Топлива впритык");
+                return("Для данного маршрута топливо на пределе.\nТребуется дозаправка.");
             }
             else if (maxTime<dist_time) {
-                return("Топлива не хватит");
+                return("Топлива не достаточно.\nНа оставшемся топливе можно продолжать движение " + QString::number(maxTime) + " ч");
             }
     }
     else {
