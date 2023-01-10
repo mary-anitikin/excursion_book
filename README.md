@@ -29,7 +29,7 @@ Cистема регистрирует экскурсионные поездки
 
 При успешном подключении открывается форма **"Регистрация экскурсионных поездок"**.
 
-![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/1.png?raw=true)
+![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/Screenshot_1.png?raw=true)
 
 В таблице слева представлены доступные экскурсии.
 
@@ -46,12 +46,16 @@ Cистема регистрирует экскурсионные поездки
 </ul>
 нажмите на кнопку <strong>"ДОБАВИТЬ"</strong>.
 
+<strong><em>Удалить тип транспортного средства можно на этой же форме, т.к. на ней располагается таблица с типами ТС.</em></strong>
+
 
 Откроется форма с полями для добавления.
 
 ![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/2.png?raw=true)
 
-<strong><em>Удалить тип транспортного средства можно на этой же форме, т.к. на ней располагается таблица с типами ТС.</em></strong>
+
+
+В анимации пример работы с программой: Выбор экскурсии, транспортного средства; добавление нового типа ТС и нового ТС этого типа.
 
 ![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/011.gif?raw=true)
 
