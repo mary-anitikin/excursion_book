@@ -10,6 +10,7 @@
 #include <QStandardItemModel>
 #include <QComboBox>
 #include "workdb.h"
+#include "tour.h"
 
 namespace Ui {
 class Widget;
@@ -62,6 +63,8 @@ private slots:
 
     void on_PB_DeleteTypeTr_clicked();
 
+    void on_PB_save_clicked();
+
 private:
     Ui::Widget *ui;
     WorkDB *myWorkDB;
@@ -71,6 +74,7 @@ private:
     QStandardItemModel *modelVehicle;
     int currentRow;
     bool flagAllTour=false;
+    Tour *testObjectTour;
 
 };
 
