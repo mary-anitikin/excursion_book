@@ -126,7 +126,7 @@
        <property name="geometry">
         <rect>
          <x>880</x>
-         <y>410</y>
+         <y>400</y>
          <width>282</width>
          <height>34</height>
         </rect>
@@ -268,19 +268,6 @@
         <string>Удалить экскурсию</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="PB_DeleteTr">
-       <property name="geometry">
-        <rect>
-         <x>870</x>
-         <y>260</y>
-         <width>282</width>
-         <height>34</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Удалить транспортное средство</string>
-       </property>
-      </widget>
       <widget class="Line" name="line_4">
        <property name="geometry">
         <rect>
@@ -296,6 +283,48 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+      </widget>
+      <widget class="QWidget" name="">
+       <property name="geometry">
+        <rect>
+         <x>710</x>
+         <y>260</y>
+         <width>451</width>
+         <height>36</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_FuelQuantity">
+          <property name="text">
+           <string>Топливо</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="LE_inputFuel"/>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="PB_DeleteTr">
+          <property name="text">
+           <string>Удалить транспортное средство</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
      <widget class="QWidget" name="page_2">

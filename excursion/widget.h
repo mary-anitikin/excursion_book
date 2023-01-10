@@ -65,6 +65,8 @@ private slots:
 
     void on_PB_save_clicked();
 
+    void on_LE_inputFuel_returnPressed();
+
 private:
     Ui::Widget *ui;
     WorkDB *myWorkDB;

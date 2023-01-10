@@ -34,8 +34,9 @@ Widget::Widget(QWidget *parent) :
     on_PB_AddExcursion_clicked();
 
     ui->LE_disttimenew->setValidator(new QDoubleValidator(0.0, 10000.0, 2, this) );
-    ui->LE_fuelQuantityTr->setValidator(new QIntValidator(0,10000,this));;
-    ///ui->PB_save->hide(); ///временно скрыла, не придумала ещё, как именно сохранять
+    ui->LE_fuelQuantityTr->setValidator(new QIntValidator(0,10000,this));
+    ui->LE_inputFuel->setValidator(new QIntValidator(0,10000,this));
+
 }
 
 Widget::~Widget()
@@ -541,6 +542,7 @@ void Widget::on_PB_save_clicked()
 {
     if(!ui->tV_excursion->currentIndex().isValid() && !ui->tV_vehicle->currentIndex().isValid()) {
         QMessageBox::critical(this, "Сохранение", "Не удалось сохранить пару экскурсия-транспортное средство. Выберете экскурсию и ТС", "Да");
+        return;
     }
     int CurRowEx = ui->tV_excursion->currentIndex().row();
     int ExcursionID = modelTour->item(CurRowEx,0)->data(Qt::UserRole).toInt();
@@ -553,8 +555,8 @@ void Widget::on_PB_save_clicked()
     testObjectTour->id = newId;
 
     int EnoughFuel = 0; // 0 - достаточно топлива
-                        // 1 - не достаточно
-                        // 2 - впритык
+    // 1 - не достаточно
+    // 2 - топлива ровно на дистанцию/время поездки
 
     QSqlQuery q(db);
 
@@ -574,4 +576,22 @@ void Widget::on_PB_save_clicked()
 
     if(q.exec()) QMessageBox::information(this, "Сохранено", " Для экскурсии успешно назначен транспорт. ", "Да");
 
+}
+
+void Widget::on_LE_inputFuel_returnPressed()
+{
+    int FuelCount = ui->LE_inputFuel->text().toInt();
+
+    int CurRowTr = ui->tV_vehicle->currentIndex().row();
+    int IDtr = modelVehicle->item(CurRowTr,0)->data(Qt::UserRole).toInt();
+
+    QString s = "UPDATE ListTransport set FuelQuantity = " + QString::number(FuelCount) + " WHERE IDtr = " + QString::number(IDtr);
+    QSqlQuery q(db);
+    if(q.exec(s)) {
+        QMessageBox::information(this, "Обновлено", " Обновлено количество топлива для выбранного транспортного средства. ", "Да");
+        tV_vehicle_fill();
+    }
+    else {
+        QMessageBox::critical(this, "Обновлено", " Не удалось обновить количество топлива для выбранного транспортного средства. ", "Да");
+    }
 }
