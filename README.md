@@ -51,7 +51,7 @@ Cистема регистрирует экскурсионные поездки
 
 Откроется форма с полями для добавления.
 
-![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/2.png?raw=true)
+![alt text](https://github.com/mary-anitikin/excursion_book/blob/master/Screenshot_13.png?raw=true)
 
 
 
