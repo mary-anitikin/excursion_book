@@ -1,13 +1,14 @@
 #include "tour.h"
 
-Tour::Tour(QObject *parent) : QObject(parent)
+Tour::Tour(int ExID, int TrID, QObject *parent) : QObject(parent)
 {
-
+    ExcursionID = ExID;
+    IDtr = TrID;
 }
 
 QString Tour::slotRate()
 {
-    if(typeTrID==1) { //автомобиль
+    if(UnitID==1) { //литры
         //расход 12л/100км
 
     double maxDist = FuelQuantity*CarFuelRate;
@@ -21,7 +22,7 @@ QString Tour::slotRate()
             return("Топлива не хватит");
         }
     }
-    if(typeTrID==2){ //самолёт
+    if(UnitID==2){ //килограммы
         double maxTime = FuelQuantity*FlyFuelRate;
             if(maxTime>dist_time){
                 return("Топлива хватит");
@@ -32,5 +33,8 @@ QString Tour::slotRate()
             else if (maxTime<dist_time) {
                 return("Топлива не хватит");
             }
+    }
+    else {
+        return("Для данного вида транспорта расчёт ещё не реализован.");
     }
 }
