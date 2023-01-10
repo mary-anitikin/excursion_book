@@ -92,6 +92,14 @@ void WorkDB::createTable()
                  "        )";
     q.exec(s6);
 
+    QString s7 = "CREATE TABLE TourWithTransport ("
+                 "            ID          INTEGER PRIMARY KEY,"
+                 "            ExcursionID INTEGER REFERENCES ListExcursion (ExcursionID) ON DELETE CASCADE,"
+                 "            IDtr        INTEGER REFERENCES ListTransport (IDtr) ON DELETE CASCADE,"
+                 "            EnoughFuel  INTEGER"
+                 "        );";
+    q.exec(s7);
+
 }
 
 void WorkDB::fillTableNormative()
