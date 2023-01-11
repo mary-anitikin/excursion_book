@@ -380,12 +380,13 @@ void Widget::on_PB_CalcTour_clicked()
     int CurRowTr = ui->tV_vehicle->currentIndex().row();
     testObjectTour->FuelQuantity = ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt();
 
-    QString s = "SELECT unitsOfMeasurement FROM niTransportType WHERE typeTrID = " + QString::number(testObjectTour->typeTrID);
+    QString s = "SELECT unitsOfMeasurement, Rate FROM niTransportType WHERE typeTrID = " + QString::number(testObjectTour->typeTrID);
 
     QSqlQuery q(db);
     q.exec(s);
     if(q.next()) {
         testObjectTour->UnitID = q.value(0).toInt();
+        testObjectTour->FuelRate = q.value(1).toInt();
     }
     else return;
 
