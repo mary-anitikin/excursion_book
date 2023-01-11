@@ -118,6 +118,13 @@ void Widget::on_PB_AddTour_clicked()
         return;
     }
     int type = ui->CB_availableTransport->currentData(Qt::UserRole).toInt();
+
+    QSqlQuery q1(db);
+    QString s1 = "SELECT unitsOfMeasurement FROM niTransportType WHERE typeTrID = " + QString::number(type);
+    q1.exec(s1);
+    q1.next();
+    int unit = q1.value(0).toInt();
+
     QString s_name = ui->LE_nameTour->text();
     QString s_firstP = ui->LE_firstPoint->text();
     QString s_endP = ui->LE_EndPoint->text();
@@ -128,7 +135,7 @@ void Widget::on_PB_AddTour_clicked()
     int newId = myWorkDB->selectMaxFromTable("ExcursionID", "ListExcursion");
 
     QSqlQuery q(db);
-    if(type==1){
+    if(unit==1){
         q.prepare("INSERT INTO ListExcursion "
                   " (ExcursionID,"
                   " NameExcursion,"
@@ -148,7 +155,7 @@ void Widget::on_PB_AddTour_clicked()
         q.bindValue(":Distance", disttime);
         q.bindValue(":typeTrID", type);
     }
-    else if(type==2)
+    else if(unit==2)
     {
         q.prepare("INSERT INTO ListExcursion "
                   " (ExcursionID,"
