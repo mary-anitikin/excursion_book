@@ -24,7 +24,6 @@ Widget::Widget(QWidget *parent) :
     CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
     CB_fill(ui->CB_availableTransport, "typeTrID", "Name", "niTransportType");
     CB_fill(ui->CB_availableFuel, "FuelID", "Name", "niFuelType" );
-    CB_fill(ui->CB_availableTravel, "idMethod", "nameMethod", "niTravelMethod");
     CB_fill(ui->CB_availableUnit, "UnitID", "UnitShortName", "niUnitOfMeasurementType");
     CB_fill(ui->CB_availableTransport_2, "typeTrID", "Name", "niTransportType");
 
@@ -62,7 +61,7 @@ void Widget::on_PB_AddTransport_clicked()
 void Widget::on_PBAddTypeTr_clicked()
 {
     if(ui->CB_availableFuel->currentData(Qt::UserRole).isNull() ||
-            ui->CB_availableTravel->currentData(Qt::UserRole).isNull() ||
+            ui->LE_rate->text().isEmpty() ||
             ui->CB_availableUnit->currentData(Qt::UserRole).isNull() ||
             ui->LE_typeTrName->text().isEmpty()) {
         QMessageBox::information(this, "Внимание!", "Заполните, пожалуйста, поля с информацией о новом типе транспорта", "Да");
@@ -70,7 +69,7 @@ void Widget::on_PBAddTypeTr_clicked()
     }
     QString nameTr = ui->LE_typeTrName->text();
     int fuel = ui->CB_availableFuel->currentData(Qt::UserRole).toInt();
-    int methodTravel = ui->CB_availableTravel->currentData(Qt::UserRole).toInt();
+    int Rate = ui->LE_rate->text().toInt();
     int unit = ui->CB_availableUnit->currentData(Qt::UserRole).toInt();
 
     int newId = myWorkDB->selectMaxFromTable("typeTrID", "niTransportType");
@@ -82,17 +81,17 @@ void Widget::on_PBAddTypeTr_clicked()
               " Name,"
               " fuel,"
               " unitsOfMeasurement,"
-              " idMethod) "
+              " Rate) "
               "values (:typeTrID,"
               " :Name, "
               " :fuel, "
               " :unitsOfMeasurement, "
-              " :idMethod) ");
+              " :Rate) ");
     q.bindValue(":typeTrID", newId);
     q.bindValue(":Name", nameTr);
     q.bindValue(":fuel", fuel);
     q.bindValue(":unitsOfMeasurement", unit);
-    q.bindValue(":idMethod", methodTravel);
+    q.bindValue(":Rate", Rate);
 
 
     if(q.exec()) {
@@ -235,22 +234,21 @@ void Widget::tV_typeTr_fill() {
     model->setColumnCount(4);
     model->setHeaderData(0,Qt::Horizontal, "Транспорт", Qt::DisplayRole);
     model->setHeaderData(1,Qt::Horizontal, "Топливо", Qt::DisplayRole);
-    model->setHeaderData(2,Qt::Horizontal, "Единицы\nизмерения", Qt::DisplayRole);
-    model->setHeaderData(3,Qt::Horizontal, "Способ\nпередвижения", Qt::DisplayRole);
+    model->setHeaderData(2,Qt::Horizontal, "Расход", Qt::DisplayRole);
+    model->setHeaderData(3,Qt::Horizontal, "Единицы\nизмерения", Qt::DisplayRole);
     ui->tV_typeTr->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     QSqlQuery q(db);
 
     if(q.exec("Select niTransportType.Name, "
               " niFuelType.Name,"
-              " niUnitOfMeasurementType.UnitShortName,"
-              " niTravelMethod.nameMethod ,"
+              " niUnitOfMeasurementType.UnitShortName,"              
               " niTransportType.typeTrID,"
-              "  niUnitOfMeasurementType.UnitID "
-              " from niTransportType, niFuelType, niUnitOfMeasurementType, niTravelMethod"
+              "  niUnitOfMeasurementType.UnitID,"
+              "  niTransportType.Rate "
+              " from niTransportType, niFuelType, niUnitOfMeasurementType "
               " where niTransportType.fuel = niFuelType.FuelID "
-              " AND niTransportType.unitsOfMeasurement = niUnitOfMeasurementType.UnitID"
-              " AND niTransportType.idMethod = niTravelMethod.idMethod")) {
+              " AND niTransportType.unitsOfMeasurement = niUnitOfMeasurementType.UnitID")) {
 
         int j = 0;
         while(q.next()) {
@@ -259,15 +257,14 @@ void Widget::tV_typeTr_fill() {
             model->setItem(j, 0, item1);
 
             QStandardItem* item2 = new QStandardItem(q.value(1).toString());
-            model->setItem(j, 1, item2);
+            model->setItem(j, 1, item2);            
+
+            QStandardItem* item4 = new QStandardItem(q.value(5).toString());
+            model->setItem(j, 2, item4);
 
             QStandardItem* item3 = new QStandardItem(q.value(2).toString());
             item3->setData(q.value(5),Qt::UserRole);
-            model->setItem(j, 2, item3);
-
-
-            QStandardItem* item4 = new QStandardItem(q.value(3).toString());
-            model->setItem(j, 3, item4);
+            model->setItem(j, 3, item3);
             j++;
         }
     }

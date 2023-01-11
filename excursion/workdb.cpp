@@ -71,17 +71,22 @@ void WorkDB::createTable()
 
     q.exec(s4);
 
-    QString s5 = "CREATE TABLE IF NOT EXISTS niTransportType ("
-                 "            typeTrID           INTEGER UNIQUE"
-                 "                                       NOT NULL"
-                 "                                       PRIMARY KEY,"
-                 "            Name               TEXT,"
-                 "            fuel               INTEGER REFERENCES niFuelType (FuelID) ON DELETE CASCADE"
-                 "                                                                    ON UPDATE CASCADE,"
-                 "            unitsOfMeasurement INTEGER REFERENCES niUnitOfMeasurementType (UnitID),"
-                 "            idMethod           INTEGER REFERENCES niTravelMethod (idMethod) "
-                 "        )";
-    q.exec(s5);
+    QString s5 = " CREATE TABLE IF NOT EXISTS niTransportType "
+                 " (typeTrID             INTEGER    UNIQUE  "
+                 "                                  NOT NULL  "
+                 "                                  PRIMARY KEY, "
+                 " Name                  TEXT, "
+                 " fuel                  INTEGER "
+                 "                                  REFERENCES niFuelType (FuelID) "
+                 "                                  ON DELETE CASCADE, "
+                 " unitsOfMeasurement    INTEGER "
+                 "                                  REFERENCES niUnitOfMeasurementType (UnitID),  "
+                 " idMethod              INTEGER "
+                 "                                  REFERENCES niTravelMethod (idMethod), "
+                 " Rate                  INTEGER "
+                 "                                   NOT NULL )";
+
+    if(!q.exec(s5)) QMessageBox::critical(this, "ffff", " CREATE TABLE IF NOT EXISTS niTransportType ", "Да");
 
     QString s6 = "CREATE TABLE IF NOT EXISTS ListTransport ("
                  "            IDtr         INTEGER PRIMARY KEY,"
@@ -116,9 +121,9 @@ void WorkDB::fillTableNormative()
     QString s4 = "INSERT INTO niTravelMethod (idMethod, nameMethod) values (3, 'по воде')";
     q.exec(s4);
 
-    QString s5 = "INSERT INTO niUnitOfMeasurementType (UnitID, UnitName, UnitShortName) values (1, 'литр', 'л')";
+    QString s5 = "INSERT INTO niUnitOfMeasurementType (UnitID, UnitName, UnitShortName) values (1, 'литр', 'л/100км')";
     q.exec(s5);
-    QString s6 = "INSERT INTO niUnitOfMeasurementType (UnitID, UnitName, UnitShortName) values (2, 'килограмм', 'кг')";
+    QString s6 = "INSERT INTO niUnitOfMeasurementType (UnitID, UnitName, UnitShortName) values (2, 'килограмм', 'кг/1час')";
     q.exec(s6);
 }
 
@@ -131,12 +136,12 @@ void WorkDB::fillTableStart()
                  " Name, "
                  " fuel, "
                  " unitsOfMeasurement,  "
-                 " idMethod ) values "
+                 " Rate ) values "
                  "(1, "
                  "'Автомобиль',"
                  " 1, "
                  " 1, "
-                 " 1)";
+                 " 12)";
     q.exec(str1);
 
     QString str2 = "INSERT INTO niTransportType "
@@ -144,12 +149,12 @@ void WorkDB::fillTableStart()
                  " Name, "
                  " fuel, "
                  " unitsOfMeasurement,  "
-                 " idMethod ) values "
+                 " Rate ) values "
                  "(2, "
                  "'Самолёт',"
                  " 1, "
                  " 2, "
-                 " 2)";
+                 " 200)";
     q.exec(str2);
 
     QString s1 = "INSERT INTO ListExcursion "
