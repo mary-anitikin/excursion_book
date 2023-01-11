@@ -403,12 +403,14 @@ void Widget::on_tV_excursion_clicked(const QModelIndex &index)
 
     ui->CB_transport->setCurrentIndex(ind);
     on_CB_transport_activated(ind);
+    ui->label_res->clear();
 }
 
 void Widget::on_PB_ShowAllTour_clicked()
 {
     tV_excursion_fill();
     flagAllTour = true;
+    ui->label_res->clear();
 }
 
 void Widget::showTourForTransport(int type, bool flag)
@@ -506,6 +508,7 @@ void Widget::on_PB_DeleteTour_clicked()
     id = modelTour->item(row,0)->data(Qt::UserRole).toInt();
     myWorkDB->deleteRowFromTable(id,"ExcursionID", "ListExcursion");
     tV_excursion_fill();
+    ui->label_res->clear();
 }
 
 void Widget::on_PB_DeleteTr_clicked()
@@ -518,6 +521,7 @@ void Widget::on_PB_DeleteTr_clicked()
     id = modelVehicle->item(row,0)->data(Qt::UserRole).toInt();
     myWorkDB->deleteRowFromTable(id,"IDtr", "ListTransport");
     tV_vehicle_fill();
+    ui->label_res->clear();
 }
 
 void Widget::on_PB_DeleteTypeTr_clicked()
@@ -599,4 +603,14 @@ void Widget::on_LE_inputFuel_returnPressed()
     else {
         QMessageBox::critical(this, "Обновлено", " Не удалось обновить количество топлива для выбранного транспортного средства. ", "Да");
     }
+}
+
+void Widget::on_tV_vehicle_clicked(const QModelIndex &index)
+{
+    ui->label_res->clear();
+}
+
+void Widget::on_CB_transport_currentIndexChanged(int index)
+{
+    ui->label_res->clear();
 }

@@ -67,6 +67,10 @@ private slots:
 
     void on_LE_inputFuel_returnPressed();
 
+    void on_tV_vehicle_clicked(const QModelIndex &index);
+
+    void on_CB_transport_currentIndexChanged(int index);
+
 private:
     Ui::Widget *ui;
     WorkDB *myWorkDB;
