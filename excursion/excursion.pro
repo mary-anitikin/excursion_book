@@ -27,12 +27,18 @@ SOURCES += \
         main.cpp \
         widget.cpp \
     tour.cpp \
-    workdb.cpp
+    workdb.cpp \
+    transport.cpp \
+    car.cpp \
+    plane.cpp
 
 HEADERS += \
         widget.h \
     tour.h \
-    workdb.h
+    workdb.h \
+    transport.h \
+    car.h \
+    plane.h
 
 FORMS += \
         widget.ui

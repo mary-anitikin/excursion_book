@@ -2,41 +2,29 @@
 #define TOUR_H
 
 #include <QObject>
+#include "transport.h"
 
 class Tour : public QObject
 {
     Q_OBJECT
 public:
-    explicit Tour(int ExID, int TrID, QObject *parent = nullptr);
-
-    int FuelRate;
-//    const double CarFuelRate = 8.33; // 12 л на 100 км
-//    const double FlyFuelRate = 0.005; //200 кг на час полёта
+    explicit Tour(int ExID, double t,  QObject *parent = nullptr);
+    explicit Tour(int ExID, int d,  QObject *parent = nullptr);
 
     int id; //идентификатор экскурсия-транспорт
     int ExcursionID; //id экскурсии
-    int IDtr; //id конкретного транспортного средства
-    double FuelQuantity; //количество топлива в л или в кг в зависимости от ТС
-    int UnitID; //единицы мизмерения топлива
-    QString Name; // Название
-
-    double dist_time; //расстояние или время в пути в зависимости от типа транспорта
+    QString Name; // Название    
     int typeTrID; //тип транспортного средства
 
-//    enum modeOfTravel
-//    {
-//        Drive = 0, ///< ехать
-//        Fly, ///< лететь
-//        Sail,     ///< плыть на корабле
-//        UnknownMethod  ///запасной вариант, если пользователь добавил что-то новенькое (а вдруг!?)
-//    };
 
 signals:
 
 public slots:
-     QString slotRate();
+     QString slotRate(Transport *tr);
 private:
-     double coefRate;
+     double dist; //расстояние в пути в зависимости от типа транспорта
+     double time; //время в пути в зависимости от типа транспорта
+
 };
 
 #endif // TOUR_H

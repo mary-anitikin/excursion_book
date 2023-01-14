@@ -10,11 +10,10 @@ WorkDB::WorkDB(QWidget *parent) : QWidget(parent)
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("../excursion_db.db");
     if(db.open()) {
-        QMessageBox::information(this,"Подключение к БД","Успешно подключились к базе данных: " + db.databaseName(), "Да");
+//        QMessageBox::information(this,"Подключение к БД","Успешно подключились к базе данных: " + db.databaseName(), "Да");
     }
     else {
-        QMessageBox::critical(this,"Подключение к БД","Не удалось подключиться к базе данных: " + db.databaseName(), "Да");
-
+        QMessageBox::critical(this,"Ошибка","Ошибка подключения к базе данных: " + db.databaseName() + ". Дальнейшая работа невозможна.", "Да");
     }
 }
 

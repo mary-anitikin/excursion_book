@@ -1,43 +1,45 @@
 #include "tour.h"
+#include "car.h"
+#include "plane.h"
 
-Tour::Tour(int ExID, int TrID, QObject *parent) : QObject(parent)
+Tour::Tour(int ExID, double t, QObject *parent) : QObject(parent)
 {
     ExcursionID = ExID;
-    IDtr = TrID;
+    time = t;
+    dist = -1;
 }
 
-QString Tour::slotRate()
+Tour::Tour(int ExID, int d, QObject *parent)
 {
-
-    if(UnitID==1) { //литры
-        //расход 12л/100км
-    coefRate = (double)100/FuelRate;
-
-    double maxDist = FuelQuantity*coefRate;
-        if(maxDist>dist_time){
-            return("Топлива достаточно на "+ QString::number(maxDist) + " км");
-        }
-        else if (maxDist==dist_time) {
-            return("Для данного маршрута топливо на пределе.\nРекомендуется дозаправка. Топлива хватит ровно на " + QString::number(maxDist) + " км");
-        }
-        else if (maxDist<dist_time) {
-            return("Топлива не достаточно.\nНа оставшемся топливе можно продолжать движение " + QString::number(maxDist) + " км");
-        }
-    }
-    if(UnitID==2){ //килограммы
-        coefRate = (double)1/FuelRate;
-        double maxTime = FuelQuantity*coefRate;
-            if(maxTime>dist_time){
-                return("Топлива достаточно на " + QString::number(maxTime) + " ч. движения");
-            }
-            else if (maxTime==dist_time) {
-                return("Для данного маршрута топливо на пределе.\nТребуется дозаправка. Топлива хватит ровно на " + QString::number(maxTime) + " ч");
-            }
-            else if (maxTime<dist_time) {
-                return("Топлива не достаточно.\nНа оставшемся топливе можно продолжать движение " + QString::number(maxTime) + " ч");
-            }
-    }
-    else {
-        return("Для данного вида транспорта расчёт ещё не реализован.");
-    }
+    ExcursionID = ExID;
+    dist = d;
+    time = -1;
 }
+
+QString Tour::slotRate(Transport *tr)
+{
+    double maxDistTime = tr->calcDistanceTime();
+    QString s;
+
+    if(dist > -1) {
+        if(maxDistTime > dist) {
+            s = "Топлива достаточно\nдля совершения поездки";
+        }
+        else{
+            s = "Топлива недостаточно\nдля совершения поездки";
+        }
+    }
+    else if(time > 0) {
+        if(maxDistTime > time) {
+            s = "Топлива достаточно\nдля совершения поездки";
+        }
+        else{
+            s = "Топлива недостаточно\nдля совершения поездки";
+        }
+    }
+    else s = "Недостаточно\nисходных данных";
+
+    return s;
+}
+
+

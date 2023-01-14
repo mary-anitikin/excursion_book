@@ -9,8 +9,11 @@
 #include <QMessageBox>
 #include <QStandardItemModel>
 #include <QComboBox>
+#include <QButtonGroup>
 #include "workdb.h"
 #include "tour.h"
+#include "car.h"
+#include "plane.h"
 
 namespace Ui {
 class Widget;
@@ -29,15 +32,11 @@ private slots:
 
     void on_PB_AddExcursion_clicked();
 
-    void on_PB_AddTransport_clicked();
-
-    void on_PBAddTypeTr_clicked();
+    void on_PB_AddTransport_clicked();    
 
     void on_PB_AddTour_clicked();
 
     void tV_excursion_fill();
-
-    void tV_typeTr_fill();
 
     void tV_vehicle_fill();
 
@@ -61,26 +60,28 @@ private slots:
 
     void on_PB_DeleteTr_clicked();
 
-    void on_PB_DeleteTypeTr_clicked();
-
     void on_PB_save_clicked();
-
-    void on_LE_inputFuel_returnPressed();
 
     void on_tV_vehicle_clicked(const QModelIndex &index);
 
     void on_CB_transport_currentIndexChanged(int index);
 
+    void on_PB_ChoiceExcursion_clicked();
+
+    void on_PB_saveFuel_clicked();
+
 private:
     Ui::Widget *ui;
+    QButtonGroup * BGroup;
     WorkDB *myWorkDB;
     QSqlDatabase db;
-    QStandardItemModel *model;
     QStandardItemModel *modelTour;
     QStandardItemModel *modelVehicle;
     int currentRow;
     bool flagAllTour=false;
     Tour *testObjectTour;
+    Car *c;
+    Plane *p;
 
 };
 
