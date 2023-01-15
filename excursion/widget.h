@@ -70,6 +70,8 @@ private slots:
 
     void on_PB_saveFuel_clicked();
 
+    void on_CB_availableTransport_2_currentIndexChanged(int index);
+
 private:
     Ui::Widget *ui;
     QButtonGroup * BGroup;

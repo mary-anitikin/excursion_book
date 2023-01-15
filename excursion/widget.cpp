@@ -544,3 +544,10 @@ void Widget::on_PB_saveFuel_clicked()
         }
     }
 }
+
+void Widget::on_CB_availableTransport_2_currentIndexChanged(int index)
+{
+    ui->LE_modelTr->clear();
+    ui->LE_numberTr->clear();
+    ui->LE_fuelQuantityTr->clear();
+}
