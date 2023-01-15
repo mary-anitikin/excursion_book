@@ -48,6 +48,7 @@ Widget::Widget(QWidget *parent) :
     ui->PB_ChoiceExcursion->setChecked(true);
     ui->PB_ChoiceExcursion->setFocus();
     on_PB_ChoiceExcursion_clicked();
+    flag = -1;
 }
 
 Widget::~Widget()
@@ -160,7 +161,7 @@ void Widget::tV_excursion_fill() {
     modelTour->setHeaderData(2,Qt::Horizontal, "Пункт\nзавершения", Qt::DisplayRole);
     modelTour->setHeaderData(3,Qt::Horizontal, "Расстояние,\nкм", Qt::DisplayRole);
     modelTour->setHeaderData(4,Qt::Horizontal, "Время\nполёта, ч", Qt::DisplayRole);
-    ui->tV_excursion->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tV_excursion->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QSqlQuery q(db);
 
@@ -203,7 +204,7 @@ void Widget::tV_vehicle_fill()
     modelVehicle->setHeaderData(0,Qt::Horizontal, "Название", Qt::DisplayRole);
     modelVehicle->setHeaderData(1,Qt::Horizontal, "Номер", Qt::DisplayRole);
     modelVehicle->setHeaderData(2,Qt::Horizontal, "Количество топлива", Qt::DisplayRole);
-    ui->tV_vehicle->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tV_vehicle->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QSqlQuery q(db);
     q.prepare("Select Brand, "
@@ -264,25 +265,38 @@ void Widget::on_CB_transport_activated(int index)
 
 void Widget::on_PB_CalcTour_clicked()
 {
+    if(!ui->tV_excursion->currentIndex().isValid() || !ui->tV_vehicle->currentIndex().isValid()){
+        QMessageBox::information(this,"Внимание!","Выберите экскурсию и транспорт.","Да");
+        return;
+    }
+
     int CurRow = ui->tV_excursion->currentIndex().row();
     QModelIndex index = modelTour->index(CurRow, 0, QModelIndex());
     int ExID = modelTour->data(index,Qt::UserRole).toInt();
 
-
-
     int CurRowTr = ui->tV_vehicle->currentIndex().row();
-    if(ui->CB_transport->currentIndex()==0) {
-        testObjectTour = new Tour(ExID, modelTour->item(CurRow, 3)->text().toInt() );
-        c = new Car() ;
-        c->fuelQuantity = ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt();
-        ui->label_res->setText(testObjectTour->slotRate(c));
+    if(ui->CB_transport->currentIndex()==0 ) {
+        if(flag==0) { /// вместо flag хорошо бы найти более изящное и рабочее решение для случая, когда классы будут добавляться
+            testObjectTour = new Tour(ExID, modelTour->item(CurRow, 3)->text().toInt() );
+            c->setfuelQuantity(ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt());
+            ui->label_res->setText(testObjectTour->slotRate(c));
+        }
+        else {
+            QMessageBox::information(this,"Внимание!","Выберите автомобиль.","Да");
+            return;
+        }
 
     }
-    else if(ui->CB_transport->currentIndex()==1){
-        testObjectTour = new Tour(ExID, modelTour->item(CurRow, 4)->text().toDouble());
-        p = new Plane();
-        p->fuelQuantity = ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt();
-        ui->label_res->setText(testObjectTour->slotRate(p));
+    else if(ui->CB_transport->currentIndex()==1 ){
+        if(flag==1) {
+            testObjectTour = new Tour(ExID, modelTour->item(CurRow, 4)->text().toDouble());
+            p->setfuelQuantity(ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt());
+            ui->label_res->setText(testObjectTour->slotRate(p));
+        }
+        else {
+            QMessageBox::information(this,"Внимание!","Выберите самолёт","Да");
+            return;
+        }
     }
 
     ui->PB_save->setEnabled(true);
@@ -445,8 +459,8 @@ void Widget::on_PB_save_clicked()
     testObjectTour->id = newId;
 
     int EnoughFuel = 0; // 0 - достаточно топлива
-    // 1 - не достаточно
-    // 2 - топлива ровно на дистанцию/время поездки
+    // 1 - недостаточно
+    /// 2 - топлива ровно на дистанцию/время поездки НЕ ИСПОЛЬЗУЮ ТЕПЕРЬ
 
     QSqlQuery q(db);
 
@@ -475,16 +489,20 @@ void Widget::on_tV_vehicle_clicked(const QModelIndex &index)
     int CurRowTr = ui->tV_vehicle->currentIndex().row();
     if(ui->CB_transport->currentIndex()==0) {
         c = new Car() ;
-        c->fuelQuantity = ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt();
-        ui->label_dt->setText("Автомобиль может проехать\n" + QString::number(c->calcDistanceTime()) + " км");
-
+        c->setfuelQuantity(ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt());
+        c->setName(modelVehicle->item(CurRowTr,0)->text());
+        c->setRegNumber(modelVehicle->item(CurRowTr,1)->text());
+        ui->label_dt->setText("Автомобиль  " + c->getName() + ", " + c->getRegNumber() + " \nможет проехать\n" + QString::number(c->calcDistanceTime()) + " км");
+        flag = 0;
     }
     else if(ui->CB_transport->currentIndex()==1){
         p = new Plane();
-        p->fuelQuantity = ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt();
-        ui->label_dt->setText("Самолёт может пролететь\n" + QString::number(p->calcDistanceTime()) + " ч");
+        p->setfuelQuantity(ui->tV_vehicle->model()->data(ui->tV_vehicle->model()->index(CurRowTr,2)).toInt());
+        p->setName(modelVehicle->item(CurRowTr,0)->text());
+        p->setRegNumber(modelVehicle->item(CurRowTr,1)->text());
+        ui->label_dt->setText("Самолёт " +p->getName() + ", " + p->getRegNumber() + " \nможет пролететь\n" + QString::number(p->calcDistanceTime()) + " ч");
+        flag = 1;
     }
-
 }
 
 void Widget::on_CB_transport_currentIndexChanged(int index)
@@ -500,24 +518,17 @@ void Widget::on_PB_ChoiceExcursion_clicked()
 
 void Widget::on_PB_saveFuel_clicked()
 {
-    /// !!!!!!!!!!! Решить вопрос со сравнением - в какой ячейке изменилось значение
+    /// !!!!!!!!!!! Как узнать номера ячеек, в которых количество топлива поменялось???
     /// !!!!!!!!!!! Решить вопрос с вводом букв и символов в ячейку
 
-    int n = 50; //затычка для количества топлива, сколько было
-//    QModelIndex index = modelVehicle->index(0, 0, QModelIndex());
-
-   ///// определяю количество строк в модели. rowCount не подходит. Решила запросом в БД - некрасивое решение...
+    ///// определяю количество строк в модели. rowCount не подходит. Решила запросом в БД ...
     //int rowC = ui->tV_vehicle->model()->rowCount(index);
-    int idType = modelVehicle->item(0,0)->data(Qt::UserRole+1).toInt();
     QSqlQuery q1(db);
-    q1.exec("SELECT count(*) FROM ListTransport ");//WHERE typeTrID = " + QString::number(idType));
+    q1.exec("SELECT count(*) FROM ListTransport ");
     if(q1.next()){
         int test = q1.value(0).toInt();/// количество строк в modelVehicle
         for(int i=0; i<test; i++) {
-            if(modelVehicle->item(i,2)->data().toInt() != n){
-
                 QSqlQuery q(db);
-
                 int fc = modelVehicle->item(i,2)->text().toInt();
                 int idtr = modelVehicle->item(i,0)->data(Qt::UserRole).toInt();
                 q.prepare("UPDATE ListTransport "
@@ -530,7 +541,6 @@ void Widget::on_PB_saveFuel_clicked()
                 if(!q.exec()) {
                     qDebug() << "не удалось обновить";
                 }
-            }
         }
     }
 }

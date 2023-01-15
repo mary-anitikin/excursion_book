@@ -9,7 +9,7 @@ class Car : public QObject, public Transport
     Q_OBJECT
 public:
     explicit Car(QObject *parent = nullptr, Transport *tr = nullptr);
-    ~Car();
+    ~Car() override;
     double calcDistanceTime() override;
 
 signals:

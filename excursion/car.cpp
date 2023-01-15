@@ -12,6 +12,6 @@ Car::~Car()
 
 double Car::calcDistanceTime()
 {
-    double distcar = (double)fuelQuantity*100/12; //8.33 - 12л/100км
+    double distcar = (double)getfuelQuantity()*100/12; //8.33 - 12л/100км
     return distcar;
 }

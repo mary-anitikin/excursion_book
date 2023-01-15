@@ -9,7 +9,7 @@ class Plane : public QObject, public Transport
     Q_OBJECT
 public:
     explicit Plane(QObject *parent = nullptr, Transport *tr = nullptr);
-    ~Plane();
+    ~Plane() override;
     double calcDistanceTime() override;
 signals:
 

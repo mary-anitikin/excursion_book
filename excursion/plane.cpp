@@ -12,6 +12,6 @@ Plane::~Plane()
 
 double Plane::calcDistanceTime()
 {
-    double distcar = (double)fuelQuantity/200;
+    double distcar = (double)getfuelQuantity()/200;
     return distcar;
 }

@@ -82,6 +82,7 @@ private:
     Tour *testObjectTour;
     Car *c;
     Plane *p;
+    int flag; //  -1 - ничего не выбрано; 0 - выбран автомобиль; 1 - выбран самолёт
 
 };
 
