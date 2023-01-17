@@ -30,7 +30,8 @@ SOURCES += \
     workdb.cpp \
     transport.cpp \
     car.cpp \
-    plane.cpp
+    plane.cpp \
+    mydelegate.cpp
 
 HEADERS += \
         widget.h \
@@ -38,7 +39,8 @@ HEADERS += \
     workdb.h \
     transport.h \
     car.h \
-    plane.h
+    plane.h \
+    mydelegate.h
 
 FORMS += \
         widget.ui

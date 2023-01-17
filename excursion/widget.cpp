@@ -19,6 +19,8 @@ Widget::Widget(QWidget *parent) :
     myWorkDB->fillTableNormative();
     myWorkDB->fillTableStart();
 
+    mdel = new MyDelegate();
+
     tV_excursion_fill();
     tV_vehicle_fill();
     CB_fill(ui->CB_transport, "typeTrID", "Name", "niTransportType");
@@ -49,6 +51,8 @@ Widget::Widget(QWidget *parent) :
     ui->PB_ChoiceExcursion->setFocus();
     on_PB_ChoiceExcursion_clicked();
     flag = -1;
+
+
 }
 
 Widget::~Widget()
@@ -178,14 +182,19 @@ void Widget::tV_excursion_fill() {
             QStandardItem* item1 = new QStandardItem(q.value(1).toString());
             item1->setData(q.value(0),Qt::UserRole);
             item1->setData(q.value(6),Qt::UserRole+1);
+            item1->setEditable(false);
             modelTour->setItem(i, 0, item1);
             QStandardItem* item2 = new QStandardItem(q.value(2).toString());
+            item2->setEditable(false);
             modelTour->setItem(i, 1, item2);
             QStandardItem* item3 = new QStandardItem(q.value(3).toString());
+            item3->setEditable(false);
             modelTour->setItem(i, 2, item3);
             QStandardItem* item4 = new QStandardItem(q.value(4).toString());
+            item4->setEditable(false);
             modelTour->setItem(i, 3, item4);
             QStandardItem* item5 = new QStandardItem(q.value(5).toString());
+            item5->setEditable(false);
             modelTour->setItem(i, 4, item5);
             i++;
         }
@@ -206,6 +215,7 @@ void Widget::tV_vehicle_fill()
     modelVehicle->setHeaderData(2,Qt::Horizontal, "Количество топлива", Qt::DisplayRole);
     ui->tV_vehicle->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+
     QSqlQuery q(db);
     q.prepare("Select Brand, "
               " Number, "
@@ -220,13 +230,16 @@ void Widget::tV_vehicle_fill()
             QStandardItem* item1 = new QStandardItem(q.value(0).toString());
             item1->setData(q.value(4),Qt::UserRole);
             item1->setData(q.value(3),Qt::UserRole+1);
+            item1->setEditable(false);
             modelVehicle->setItem(j, 0, item1);
 
             QStandardItem* item2 = new QStandardItem(q.value(1).toString());
+            item2->setEditable(false);
             modelVehicle->setItem(j, 1, item2);
 
             QStandardItem* item3 = new QStandardItem(q.value(2).toString());
             modelVehicle->setItem(j, 2, item3);
+            ui->tV_vehicle->setItemDelegate(mdel) ; ///куда засунуть
             j++;
         }
     }

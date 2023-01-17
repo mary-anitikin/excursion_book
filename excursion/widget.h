@@ -14,6 +14,7 @@
 #include "tour.h"
 #include "car.h"
 #include "plane.h"
+#include "mydelegate.h"
 
 namespace Ui {
 class Widget;
@@ -85,6 +86,7 @@ private:
     Car *c;
     Plane *p;
     int flag; //  -1 - ничего не выбрано; 0 - выбран автомобиль; 1 - выбран самолёт
+    MyDelegate *mdel;
 
 };
 
